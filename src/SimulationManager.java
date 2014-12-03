@@ -82,8 +82,9 @@ public class SimulationManager {
 					return null;
 				
 				addMessage(message);
-				processMessage(message);
+				Message received =  processMessage(message);
 				
+			return received ;
 			}
 		};
 		
