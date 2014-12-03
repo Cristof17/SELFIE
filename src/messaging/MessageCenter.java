@@ -6,6 +6,8 @@ import components.Component;
 
 public abstract class MessageCenter {
 	
+	public ArrayList<String > stringFeatures = new ArrayList<String>();
+	
 	private String centerName;
 	private ArrayList<Message> publishedMessages = new ArrayList<Message>();
 	private ArrayList<Component> components ;

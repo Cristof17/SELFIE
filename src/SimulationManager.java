@@ -63,7 +63,6 @@ public class SimulationManager {
 		//tokenizer allows me to read word by word 
 		StreamTokenizer tokenizer = new StreamTokenizer(buff_read);
 		
-		
 		int current = tokenizer.nextToken();
 		//read the number of centers
 		int n = (int)tokenizer.nval;
@@ -73,41 +72,42 @@ public class SimulationManager {
 		//read the first message center after
 		// the number of message centers 
 		
-		current_message_center = new MessageCenter(tokenizer.sval) {
-			
-			@Override
-			protected Message publishAlgorithm(Message message) {
-				
-				if(hasBeenHereBefore(message))
-					return null;
-				
-				addMessage(message);
-				Message received =  processMessage(message);
-				
-			return received ;
-			}
-		};
+		current_message_center = getNewMessageCenter(tokenizer.sval);
+		
 		
 		for(int i = 0 ; i <= n ; ){
 			//the String value that the tokenizer takes out from the current line
 			String value = tokenizer.sval;
 			
 			if(features.contains(value)){
+				
 				System.out.println("Feature "+value);
+				current_message_center.stringFeatures.add(value);
 				tokenizer.nextToken();
+				
 			}else{
+				
 				if(i == n)
 					break;
 				System.out.println("Center " + value);
 				
+				/*
+				 * Add the newly created MessageCenter to the 
+				 * messageCenters Array and now create another
+				 * one 
+				 */
+				message_center_array.add(current_message_center);
+				
+				/*
+				 * Create a new MessageCenter
+				 */
+				current_message_center = getNewMessageCenter(value);
 				tokenizer.nextToken();
 				i++;
 			}
 		}
 		
 		System.out.println("Current value "+ tokenizer.sval);
-		
-		
 		
 		return null;
 	}
@@ -121,10 +121,10 @@ public class SimulationManager {
 		/* 
 		 * Example of usage when the MessageCenter will be implemented *
 		*/ 
-		MessageLoad load = new MessageLoad(TaskType.IMAGE_LOAD, "image_input.jpg");
-		MessageImage image = (MessageImage)this.messageCenter.publish(load);
-		
-		image.generateId(); //pentru ca utilizam acelasi mesaj image trebuie sa-i generam un nou id
+//		MessageLoad load = new MessageLoad(TaskType.IMAGE_LOAD, "image_input.jpg");
+//		MessageImage image = (MessageImage)this.messageCenter.publish(load);
+//		
+//		image.generateId(); //pentru ca utilizam acelasi mesaj image trebuie sa-i generam un nou id
 		
 //		MessageSave save = new MessageSave(TaskType.IMAGE_SAVE, 
 //					image.getPixels(), image.getWidth(), image.getHeight(), 
@@ -134,6 +134,23 @@ public class SimulationManager {
 		
 		
 		
+	}
+	
+	public MessageCenter getNewMessageCenter(String name){
+		return new MessageCenter(name) {
+			
+			@Override
+			protected Message publishAlgorithm(Message message) {
+				
+				if(hasBeenHereBefore(message))
+					return null;
+				
+				addMessage(message);
+				Message received =  processMessage(message);
+				
+			return received ;
+			}
+		};
 	}
 	
 	
