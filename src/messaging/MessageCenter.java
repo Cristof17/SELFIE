@@ -117,6 +117,9 @@ public abstract class MessageCenter {
 			Message received = component.notify(message); //get the Message returned by calling the notify method for that component
 			return  received; 
 		}else{
+			if(neighbors == null)
+				return null ;
+			
 			for(MessageCenter m : neighbors){  //send the message to all neighbors
 				Message received = m.publish(message); // get the message from the neighbor 
 				if(received == null) // this neighbor could not help me

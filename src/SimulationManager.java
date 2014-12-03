@@ -8,6 +8,12 @@ import java.util.Scanner;
 
 import messaging.Message;
 import messaging.MessageCenter;
+import messaging.MessageFlash;
+import messaging.MessageImage;
+import messaging.MessageLoad;
+import messaging.MessageSave;
+import types.FlashType;
+import types.TaskType;
 
 import components.BlackWhite;
 import components.Blur;
@@ -24,6 +30,8 @@ import components.Zoom;
 public class SimulationManager {
 	private MessageCenter messageCenter;
 
+	private String systemInString = "party.jpg selfie.jpg pre(flash=auto;zoom=100,100,300,400) photo(type=normal) post(black_white;blur)"+System.getProperty("line.separator")+ "exit";
+	
 	
 	// The values of the ArrayList are introduced in the constructor
 	private ArrayList<MessageCenter> message_center_array = new ArrayList<MessageCenter>();
@@ -83,6 +91,7 @@ public class SimulationManager {
 		for(int i = 0 ; i < n ; i++){
 			
 			String linie = buff_read.readLine();
+			sc.close();
 			sc = new Scanner(linie);
 			
 			MessageCenter center = getMessageCenterFromArray(sc.next());
@@ -161,6 +170,43 @@ public class SimulationManager {
 		/* 
 		 * Example of usage when the MessageCenter will be implemented *
 		*/ 
+		Scanner sc ;
+		
+		sc = new Scanner(systemInString);
+		
+		while(sc.hasNext()){
+			
+			String input_file = sc.next();
+			String output_file = sc.next();
+			
+			/*
+			 * Build MessageLoad using the input_file's name 
+			 */
+			Message messageLoad = new MessageLoad(TaskType.IMAGE_LOAD, "image_input.jpg");
+			
+			MessageImage image =  (MessageImage) this.messageCenter.publish(messageLoad);
+			
+			image.generateId();
+			
+			Message messageFlash = new MessageFlash(TaskType.FLASH, image.getPixels(), image.getWidth(), image.getHeight(), FlashType.AUTO);
+			
+			MessageImage messageImage = (MessageImage)this.messageCenter.publish(messageFlash);
+			
+			
+			/*
+			 * I'm going to hardencode the values because I am wasting time
+			 * figuring out the reading 
+			 * 
+			 */
+			
+//			String pre = sc.next();
+//			String pre_delims = "\\(\\=\\;\\,pre";
+//			String[] items = pre.split(pre_delims);
+//			
+//			if(sc.next().equals("exit"))
+				break;
+		}
+		
 //		MessageLoad load = new MessageLoad(TaskType.IMAGE_LOAD, "image_input.jpg");
 //		MessageImage image = (MessageImage)this.messageCenter.publish(load);
 //		
