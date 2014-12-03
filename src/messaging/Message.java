@@ -1,5 +1,6 @@
 package messaging;
 
+import generator.Generator;
 import types.TaskType;
 
 public abstract class Message {
@@ -13,8 +14,7 @@ public abstract class Message {
 	}
 	
 	public void generateId() {
-		//TODO: generate unique ids for Message
-		this.messageId = 0;
+		this.messageId = Generator.generateInt();
 	}
 	
 	public void setTaskType(TaskType taskType) {
