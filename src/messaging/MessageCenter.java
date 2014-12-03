@@ -76,6 +76,13 @@ public abstract class MessageCenter {
 	return null;
 	}
 	
+	/**
+	 * Method which processes the message received and returning the message processed by 
+	 * the right Component
+	 * @param message The message to be processed
+	 * @return Returns the message that has been processed or null if there was no component
+	 * that could have processed the message received as argument
+	 */
 	public Message processMessage(Message message){
 		
 		if(isFitForMe(message)){ //if the components in this class can handle the message
