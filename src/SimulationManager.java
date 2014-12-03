@@ -3,41 +3,26 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.StreamTokenizer;
 import java.util.ArrayList;
+import java.util.Scanner;
+
+import components.Component;
 
 import messaging.Message;
 import messaging.MessageCenter;
-import messaging.MessageImage;
-import messaging.MessageLoad;
-import types.TaskType;
 
 
 public class SimulationManager {
 	private MessageCenter messageCenter;
-	
-	//ArrayList used to check if a string read from the configuration file
-	//referes to a MessageCenter or a Component by calling contains() method
-	// of the ArrayList object
+
 	
 	// The values of the ArrayList are introduced in the constructor
-	private ArrayList<String> features = new ArrayList<String>();
 	private ArrayList<MessageCenter> message_center_array = new ArrayList<MessageCenter>();
 	private MessageCenter current_message_center ;
 	
 	public SimulationManager(String networkConfigFile) {
 		try {
 			
-			
-			features.add("Zoom");
-			features.add("Flash");
-			features.add("RawPhoto");
-			features.add("NormalPhoto");
-			features.add("Blur");
-			features.add("BlackWhite");
-			features.add("Sepia");
-			features.add("ImageLoader");
-			features.add("ImageSaver");
 			this.messageCenter = buildNetwork(networkConfigFile);
 			
 		} catch (FileNotFoundException e) {
@@ -60,56 +45,54 @@ public class SimulationManager {
 		
 		FileReader reader = new  FileReader(new File(networkConfigFile));
 		BufferedReader buff_read = new BufferedReader(reader);
-		//tokenizer allows me to read word by word 
-		StreamTokenizer tokenizer = new StreamTokenizer(buff_read);
+	
 		
-		int current = tokenizer.nextToken();
-		//read the number of centers
-		int n = (int)tokenizer.nval;
-		
-		tokenizer.nextToken();
-		
-		//read the first message center after
-		// the number of message centers 
-		
-		current_message_center = getNewMessageCenter(tokenizer.sval);
+		String line = buff_read.readLine();
+		Scanner sc = new Scanner(line);
+		int n = sc.nextInt();
 		
 		
-		for(int i = 0 ; i <= n ; ){
-			//the String value that the tokenizer takes out from the current line
-			String value = tokenizer.sval;
+		
+		for(int i = 0 ; i < n ; i++){
+			String linie = buff_read.readLine();
+			sc = new Scanner(linie);
+			MessageCenter center = getNewMessageCenter(sc.next());
 			
-			if(features.contains(value)){
-				
-				System.out.println("Feature "+value);
-				current_message_center.stringFeatures.add(value);
-				tokenizer.nextToken();
-				
-			}else{
-				
-				if(i == n)
-					break;
-				System.out.println("Center " + value);
-				
-				/*
-				 * Add the newly created MessageCenter to the 
-				 * messageCenters Array and now create another
-				 * one 
-				 */
-				message_center_array.add(current_message_center);
-				
-				/*
-				 * Create a new MessageCenter
-				 */
-				current_message_center = getNewMessageCenter(value);
-				tokenizer.nextToken();
-				i++;
+			while(sc.hasNext()){
+				center.stringFeatures.add(sc.next()); 
 			}
+			
+			message_center_array.add(center);
+			
 		}
-		
-		System.out.println("Current value "+ tokenizer.sval);
-		
+
 		return null;
+	}
+	
+		
+	public MessageCenter getNewMessageCenter(String name){
+		return new MessageCenter(name) {
+			
+			@Override
+			protected Message publishAlgorithm(Message message) {
+				
+				if(hasBeenHereBefore(message))
+					return null;
+				
+				addMessage(message);
+				Message received =  processMessage(message);
+				
+			return received ;
+			}
+		};
+	}
+	
+	public MessageCenter getMessageCenterFromArray(String name){
+		for(MessageCenter c : message_center_array){
+			if(c.getCenterName().equals(name))
+				return c; 
+		}
+	return null ;
 	}
 	
 	
@@ -130,29 +113,9 @@ public class SimulationManager {
 //					image.getPixels(), image.getWidth(), image.getHeight(), 
 //					"");
 //		MessageSuccess success = (MessageSuccess)this.messageCenter.publish(save);
-		
-		
-		
+				
 		
 	}
-	
-	public MessageCenter getNewMessageCenter(String name){
-		return new MessageCenter(name) {
-			
-			@Override
-			protected Message publishAlgorithm(Message message) {
-				
-				if(hasBeenHereBefore(message))
-					return null;
-				
-				addMessage(message);
-				Message received =  processMessage(message);
-				
-			return received ;
-			}
-		};
-	}
-	
 	
 	
 	/**

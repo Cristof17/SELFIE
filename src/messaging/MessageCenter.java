@@ -25,6 +25,14 @@ public abstract class MessageCenter {
 	}
 	
 	/**
+	 * This method returns the center name of this Message Center
+	 * @return Returns the name of the Message Center
+	 */
+	public String getCenterName(){
+		return this.centerName;
+	}
+	
+	/**
 	 * This method adds a Component to this MessageCenter
 	 * @param component The component to be added
 	 */
