@@ -6,10 +6,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import components.Component;
-
 import messaging.Message;
 import messaging.MessageCenter;
+
+import components.BlackWhite;
+import components.Blur;
+import components.Component;
+import components.Flash;
+import components.ImageLoader;
+import components.ImageSaver;
+import components.NormalPhoto;
+import components.RawPhoto;
+import components.Sepia;
+import components.Zoom;
 
 
 public class SimulationManager {
@@ -18,7 +27,6 @@ public class SimulationManager {
 	
 	// The values of the ArrayList are introduced in the constructor
 	private ArrayList<MessageCenter> message_center_array = new ArrayList<MessageCenter>();
-	private MessageCenter current_message_center ;
 	
 	public SimulationManager(String networkConfigFile) {
 		try {
@@ -52,21 +60,42 @@ public class SimulationManager {
 		int n = sc.nextInt();
 		
 		
-		
+		/*
+		 * Create the centers and put them into the arrayList
+		 */
 		for(int i = 0 ; i < n ; i++){
 			String linie = buff_read.readLine();
 			sc = new Scanner(linie);
 			MessageCenter center = getNewMessageCenter(sc.next());
 			
 			while(sc.hasNext()){
-				center.stringFeatures.add(sc.next()); 
+				center.addComponent(getSpecificComponent(sc.next())); 
 			}
 			
 			message_center_array.add(center);
 			
 		}
 
-		return null;
+		/*
+		 * Read the neighbors list and add them to the 
+		 * right MessageCenters
+		 */
+		for(int i = 0 ; i < n ; i++){
+			
+			String linie = buff_read.readLine();
+			sc = new Scanner(linie);
+			
+			MessageCenter center = getMessageCenterFromArray(sc.next());
+			
+			while(sc.hasNext()){
+				center.addNeighbor(getMessageCenterFromArray(sc.next()));
+			}
+		}
+		
+		reader.close();
+		buff_read.close();
+		sc.close();
+		return message_center_array.get(0);
 	}
 	
 		
@@ -87,12 +116,40 @@ public class SimulationManager {
 		};
 	}
 	
+	
+	
 	public MessageCenter getMessageCenterFromArray(String name){
 		for(MessageCenter c : message_center_array){
 			if(c.getCenterName().equals(name))
 				return c; 
 		}
 	return null ;
+	}
+	
+	public Component getSpecificComponent(String type){
+		
+		switch (type) {
+		case "Zoom":
+			return new Zoom();
+		case "Blur":
+			return new Blur();
+		case "BlackWhite":
+			return new BlackWhite();
+		case "Sepia":
+			return new Sepia();
+		case "RawPhoto":
+			return new RawPhoto();
+		case "Flash":
+			return new Flash();
+		case "ImageLoader":
+			return new ImageLoader();
+		case "ImageSaver":
+			return new ImageSaver();
+		case "NormalPhoto":
+			return new NormalPhoto();
+		default:
+			return null;
+		}
 	}
 	
 	
