@@ -69,7 +69,7 @@ public class SimulationManager {
 			MessageCenter center = getNewMessageCenter(sc.next());
 			
 			while(sc.hasNext()){
-				center.addComponent(getSpecificComponent(sc.next())); 
+				center.subscribe(getSpecificComponent(sc.next())); 
 			}
 			
 			message_center_array.add(center);

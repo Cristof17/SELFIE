@@ -8,7 +8,7 @@ public abstract class MessageCenter {
 	
 	private String centerName;
 	private ArrayList<Message> publishedMessages = new ArrayList<Message>();
-	private ArrayList<Component> components ;
+	private ArrayList<Component> components = new ArrayList<Component>() ;
 	private ArrayList<MessageCenter> neighbors ; 
 		
 	public MessageCenter(String centerName) {
@@ -32,10 +32,19 @@ public abstract class MessageCenter {
 	
 	/**
 	 * This method adds a Component to this MessageCenter
-	 * @param component The component to be added
+	 * @param component The Component to be added
 	 */
-	public void addComponent(Component component){
+	public void subscribe(Component component){
 		this.components.add(component);
+	}
+	
+	/**
+	 * This method removes a Component from the MessageCenter
+	 * @param component The Component to be removed
+	 */
+	public void unsubscribe(Component component){
+		if(this.components.contains(component))
+			components.remove(component);
 	}
 	
 	
