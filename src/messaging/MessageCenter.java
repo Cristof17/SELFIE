@@ -16,11 +16,16 @@ public abstract class MessageCenter {
 		this.centerName = centerName;
 	}
 
+	
 	public Message publish(Message message)	{
 		System.out.println(centerName);
 		return publishAlgorithm(message);
 	}
 	
+	/**
+	 * This method adds a Component to this MessageCenter
+	 * @param component The component to be added
+	 */
 	public void addComponent(Component component){
 		this.components.add(component);
 	}
@@ -67,6 +72,11 @@ public abstract class MessageCenter {
 		return false;
 	}
 	
+	/**
+	 * Method which finds the right Component to handle the Message
+	 * @param message The message to be processed
+	 * @return Returns the component that can handle the Message received as parameter
+	 */
 	public Component getTheComponentFitForTheMessage(Message message){
 		for(Component c : components){
 			if(c.getTaskType().equals(message.getTaskType())){
@@ -100,8 +110,6 @@ public abstract class MessageCenter {
 		}
 	return null ;
 	}
-	
-	
 	
 	
 	protected abstract Message publishAlgorithm(Message message);
