@@ -79,9 +79,10 @@ public class SimulationManager {
 			protected Message publishAlgorithm(Message message) {
 				
 				if(hasBeenHereBefore(message))
-				return null;
+					return null;
 				
 				addMessage(message);
+				processMessage(message);
 				
 			}
 		};

@@ -76,10 +76,22 @@ public abstract class MessageCenter {
 	return null;
 	}
 	
-	public void processMessage(Message){
-		if(isFitForMe(message)){
-			
+	public Message processMessage(Message message){
+		
+		if(isFitForMe(message)){ //if the components in this class can handle the message
+			Component component = getTheComponentFitForTheMessage(message); //get the one that can handle the message
+			Message received = component.notify(message); //get the Message returned by calling the notify method for that component
+			return  received; 
+		}else{
+			for(MessageCenter m : neighbors){  //send the message to all neighbors
+				Message received = m.publish(message); // get the message from the neighbor 
+				if(received == null) // this neighbor could not help me
+					continue; // move to the next neighbor
+				else
+					return received ; //return the message thet a neighbor could provide
+			}
 		}
+	return null ;
 	}
 	
 	
