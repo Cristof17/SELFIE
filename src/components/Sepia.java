@@ -6,6 +6,7 @@ import types.TaskType;
 
 public class Sepia extends Component{
 
+	// ?? implemented superficially 
 	public Sepia() {
 		super(TaskType.SEPIA);
 	}
