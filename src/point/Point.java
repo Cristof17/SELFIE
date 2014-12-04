@@ -2,27 +2,28 @@ package point;
 
 public class Point {
 
-	private int line ,column ;
+	private int width ,height ;
 	
-	public Point(int line , int column){
-		this.line = line;
-		this.column = column;
+	public Point(int width , int height){
+		this.width = width ;
+		this.height = height ;
 	}
 
-	public int getLine() {
-		return line;
+	public int getWidth() {
+		return width;
 	}
 
-	public void setLine(int line) {
-		this.line = line;
+	public void setWidth(int width) {
+		this.width = width;
 	}
 
-	public int getColumn() {
-		return column;
+	public int getHeight() {
+		return height;
 	}
 
-	public void setColumn(int column) {
-		this.column = column;
+	public void setHeight(int height) {
+		this.height = height;
 	}
+
 	
 }

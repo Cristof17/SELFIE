@@ -39,9 +39,9 @@ public class Flash extends Component{
 		if(averege < 60){
 			for(int i = 0 ; i < height ; i ++ ){
 				for(int j = 0 ; j < width ; j++){
-					pixels[i][j][0] += 50 ;
-					pixels[i][j][1] += 50 ;
-					pixels[i][j][2] += 50 ;
+					pixels[i][j][0] = checkPixelMax(pixels[i][j][0]) ;
+					pixels[i][j][1] = checkPixelMax(pixels[i][j][1]) ;
+					pixels[i][j][2] = checkPixelMax(pixels[i][j][2]) ;
 				}
 			}
 		}
@@ -49,6 +49,19 @@ public class Flash extends Component{
 		Message resulted = new MessageImage(TaskType.FLASH, pixels, width, height);
 		
 		return resulted;
+	}
+	
+	/**Helper method for verifying if the value of a pixel incremented
+	 * exceeds 255 .
+	 * 
+	 * @param value The value of the unincremented pixel that needs to be verified
+	 * @return Returns the value of the pixel incrememnted or 255 if the size of the pixel is
+	 * greater than 255
+	 */
+	private int checkPixelMax(int value){
+		if(value + 50  > 255)
+			return 255;
+	return value + 50 ;
 	}
 
 }

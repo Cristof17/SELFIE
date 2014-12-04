@@ -12,7 +12,7 @@ public class NormalPhoto extends Component {
 
 	@Override
 	public Message notify(Message message) {
-		MessageImage messageImage = (MessageImage)message ;
+		MessageImage messageImage = (MessageImage)message;
 		return null;
 	}
 
