@@ -32,7 +32,7 @@ public class Sepia extends Component{
 			}
 		}
 		
-		MessageImage result = new MessageImage(TaskType.SEPIA, pixels, width, height);
+		MessageImage result = new MessageImage(TaskType.IMAGE_SAVE, pixels, width, height);
 		
 		return result;
 	}
