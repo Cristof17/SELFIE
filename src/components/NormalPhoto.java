@@ -6,14 +6,16 @@ import types.TaskType;
 
 public class NormalPhoto extends Component {
 
+	private RawPhoto raw = new RawPhoto();
+	
 	public NormalPhoto() {
 		super(TaskType.NORMAL_PHOTO);
 	}
 
 	@Override
 	public Message notify(Message message) {
-		MessageImage messageImage = (MessageImage)message;
-		return null;
+		
+		return raw.notify(message);
 	}
 
 	
