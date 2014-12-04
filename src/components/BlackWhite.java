@@ -6,6 +6,8 @@ import types.TaskType;
 
 public class BlackWhite extends Component{
 
+	
+	// ? Superficially implemented 
 	public BlackWhite() {
 		super(TaskType.BLACK_WHITE);
 	}
