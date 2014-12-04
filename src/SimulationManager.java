@@ -172,24 +172,23 @@ public class SimulationManager {
 	 * Reads the commands from stdin and uses the messageCenter to solve all the tasks
 	 */
 	public void start() {
-		
-		/* 
-		 * Example of usage when the MessageCenter will be implemented *
-		*/ 
+		 
+		while(true){
 		
 		Scanner sc ;
+		sc = new Scanner(System.in);
 		
-		sc = new Scanner(systemInString);
-		
-		while(sc.hasNext()){
+			String first_word = sc.next();
 			
-			String input_file = sc.next();
-			String output_file = sc.next();
+			if(first_word.equals("exit"))
+				break;
+			
+			String second_word = sc.next();
 			
 			/*
 			 * Build MessageLoad using the input_file's name 
 			 */
-			Message messageLoad = new MessageLoad(TaskType.IMAGE_LOAD, "image_input.jpg");
+			Message messageLoad = new MessageLoad(TaskType.IMAGE_LOAD, first_word);
 			
 			MessageImage image =  (MessageImage) this.messageCenter.publish(messageLoad);
 			
@@ -311,7 +310,7 @@ public class SimulationManager {
 			}
 			
 			
-			MessageSave messageSave = new MessageSave(TaskType.IMAGE_SAVE, image.getPixels(), image.getWidth(), image.getHeight(), output_file);
+			MessageSave messageSave = new MessageSave(TaskType.IMAGE_SAVE, image.getPixels(), image.getWidth(), image.getHeight(), second_word);
 			this.messageCenter.publish(messageSave);
 			/*
 			 * I'm going to hardencode the values because I am wasting time
