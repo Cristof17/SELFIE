@@ -60,9 +60,8 @@ public class Flash extends Component{
 			for(int i = 0 ; i < height ; i++){
 				for(int j = 0 ; j < width ; j++){
 					pixels[i][j][0] = checkPixelMax(pixels[i][j][0], 50);
-					pixels[i][j][0] = checkPixelMax(pixels[i][j][0], 50);
-					pixels[i][j][0] = checkPixelMax(pixels[i][j][0], 50);
-					pixels[i][j][0] = checkPixelMax(pixels[i][j][0], 50);
+					pixels[i][j][1] = checkPixelMax(pixels[i][j][1], 50);
+					pixels[i][j][2] = checkPixelMax(pixels[i][j][2], 50);
 				}
 			}
 			

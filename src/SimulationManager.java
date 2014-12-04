@@ -238,14 +238,20 @@ public class SimulationManager {
 		
 		Message imageMessage = loader.notify(load);
 		
+		Flash flash = new Flash() ;
+		MessageFlash messageFlash = new MessageFlash(TaskType.FLASH, ((MessageImage)imageMessage).getPixels(), ((MessageImage)imageMessage).getWidth(),((MessageImage)imageMessage).getHeight(), FlashType.AUTO);
+		Message afterFlash = flash.notify(messageFlash);
+		
 		RawPhoto raw = new RawPhoto();
 		Message rawMessage = raw.notify(imageMessage);
 		
 		MessageImage messageImage = (MessageImage)rawMessage;
-		
+		MessageImage afterflashMessage = (MessageImage)afterFlash;
+		MessageSave messageSaveFlash = new MessageSave(TaskType.IMAGE_SAVE, afterflashMessage.getPixels(), afterflashMessage.getWidth(), afterflashMessage.getHeight(), "result_flash.bmp");
 		MessageSave messageSave = new MessageSave(TaskType.IMAGE_SAVE, messageImage.getPixels(), messageImage.getWidth(), messageImage.getHeight(), "result.bmp");
 		ImageSaver saver = new ImageSaver();
 		saver.notify(messageSave);
+		saver.notify(messageSaveFlash);
 		
 		
 		
