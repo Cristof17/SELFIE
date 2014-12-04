@@ -16,6 +16,7 @@ import messaging.MessageCenter;
 import messaging.MessageFlash;
 import messaging.MessageImage;
 import messaging.MessageLoad;
+import messaging.MessageSave;
 import messaging.MessageZoom;
 import types.FlashType;
 import types.TaskType;
@@ -194,6 +195,8 @@ public class SimulationManager {
 			
 			image.generateId();
 			
+			
+			
 			String preString = sc.next();
 			
 			StringTokenizer tokenizer = new StringTokenizer(preString, "()=,;");
@@ -203,7 +206,7 @@ public class SimulationManager {
 				preTokens.add(tokenizer.nextToken());
 			}
 			
-			MessageFlash messageFlash = null;
+
 			MessageZoom messageZoom = null;
 			
 			//search for flash value
@@ -215,10 +218,10 @@ public class SimulationManager {
 				  
 				*/
 				String flashType = preTokens.get(preTokens.indexOf("flash") +1 );
-				messageFlash = new MessageFlash(TaskType.FLASH, image.getPixels(), image.getWidth(), image.getHeight(), getFlashType(flashType));
+				MessageFlash messageFlash = new MessageFlash(TaskType.FLASH, image.getPixels(), image.getWidth(), image.getHeight(), getFlashType(flashType));
 				
-				Flash flash = new Flash();
-				image = (MessageImage) flash.notify(messageFlash);
+				image = (MessageImage) this.messageCenter.publish(messageFlash);		
+				image.generateId();
 			}
 			
 			if(preTokens.contains("zoom")){
@@ -234,8 +237,8 @@ public class SimulationManager {
 				
 				messageZoom = new MessageZoom(TaskType.ZOOM, image.getPixels(), A, B);
 				
-				Zoom zoom = new Zoom();
-				image = (MessageImage) zoom.notify(messageZoom);
+				image = (MessageImage) this.messageCenter.publish(messageZoom);
+				image.generateId();
 			}
 			
 			
@@ -245,8 +248,71 @@ public class SimulationManager {
 			 * 
 			 */
 			String photoString = sc.next();
+			tokenizer = new StringTokenizer(photoString,"()=");
+			ArrayList<String> photoTokens = new ArrayList<String>();
+			
+			while(tokenizer.hasMoreTokens()){
+				photoTokens.add(tokenizer.nextToken());
+			}
+			
+			if(photoTokens.contains("type")){
+				int typePosition = photoTokens.indexOf("type") ;
+				
+				image.setTaskType(getPhotoType(photoTokens.get(typePosition + 1 )));
+				image = (MessageImage) this.messageCenter.publish(image);
+				image.generateId();
+				
+//				if (getPhotoType(photoTokens.get(typePosition + 1)).equals(TaskType.RAW_PHOTO)){
+//					
+//					image.setTaskType(TaskType.RAW_PHOTO);
+//					RawPhoto rawPhoto = new RawPhoto();
+//					
+//					image = (MessageImage) rawPhoto.notify(image);
+//					image.generateId();
+//					
+//				}else if(getPhotoType(photoTokens.get(typePosition + 1 )).equals(TaskType.NORMAL_PHOTO)){
+//					image.setTaskType(TaskType.RAW_PHOTO);
+//					
+//					RawPhoto rawPhoto = new RawPhoto() ;
+//					image = (MessageImage) rawPhoto.notify(image);
+//					
+//					image.generateId();
+//					
+//					image.setTaskType(TaskType.NORMAL_PHOTO);
+//					NormalPhoto normalPhoto = new NormalPhoto();
+//					image = (MessageImage) normalPhoto.notify(image);
+//					
+//					image.generateId();
+//					
+//				}
+			}
 			
 			
+			
+			/*
+			 * Post substring from the whole line
+			 */
+			String postString = sc.next();
+			tokenizer = new StringTokenizer(postString, "();");
+			ArrayList<String> postTokens = new ArrayList<String>();
+			
+			while(tokenizer.hasMoreTokens()){
+				postTokens.add(tokenizer.nextToken());
+			}
+			
+			postTokens.remove("post");
+			
+			for(String s : postTokens){
+				
+				image.setTaskType(getPostType(s));
+				image = (MessageImage) this.messageCenter.publish(image);
+				image.generateId();
+				
+			}
+			
+			
+			MessageSave messageSave = new MessageSave(TaskType.IMAGE_SAVE, image.getPixels(), image.getWidth(), image.getHeight(), output_file);
+			this.messageCenter.publish(messageSave);
 			/*
 			 * I'm going to hardencode the values because I am wasting time
 			 * figuring out the reading 
@@ -275,7 +341,31 @@ public class SimulationManager {
 		
 	}
 	
+	public TaskType getPostType(String value){
+		switch (value) {
+		case "sepia":
+			return TaskType.SEPIA;
+		case "black_white":
+			return TaskType.BLACK_WHITE;
+		case "blur":
+			return TaskType.BLUR;
+		default:
+			return null;
+		}
+	}
 	
+	public TaskType getPhotoType(String value){
+		switch (value) {
+		case "normal":
+			return TaskType.NORMAL_PHOTO; 
+			
+		case "raw":
+			return TaskType.RAW_PHOTO;
+			
+		default:
+			return null ;
+		}
+	}
 	
 	public FlashType getFlashType(String stringValue){
 		switch (stringValue) {
