@@ -230,8 +230,25 @@ public class SimulationManager {
 			System.out.println("Usage: java SimulationManager <network_config_file>");
 			return;
 		}
-		SimulationManager simulationManager = new SimulationManager(args[0]);
-		simulationManager.start();
+//		SimulationManager simulationManager = new SimulationManager(args[0]);
+//		simulationManager.start();
+		
+		MessageLoad load = new MessageLoad(TaskType.IMAGE_LOAD, "image_input.jpg");
+		ImageLoader loader = new  ImageLoader();
+		
+		Message imageMessage = loader.notify(load);
+		
+		RawPhoto raw = new RawPhoto();
+		Message rawMessage = raw.notify(imageMessage);
+		
+		MessageImage messageImage = (MessageImage)rawMessage;
+		
+		MessageSave messageSave = new MessageSave(TaskType.IMAGE_SAVE, messageImage.getPixels(), messageImage.getWidth(), messageImage.getHeight(), "result.bmp");
+		ImageSaver saver = new ImageSaver();
+		saver.notify(messageSave);
+		
+		
+		
 	}
 
 }
