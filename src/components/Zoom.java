@@ -26,12 +26,12 @@ public class Zoom extends Component{
 		
 		
 		int delta_height = B.getHeight()-A.getHeight();
-		int delta_width = B.getHeight() - A.getWidth();
+		int delta_width = B.getWidth() - A.getWidth();
 		
 		int[][][] pixels_returned = new int[delta_height + 1][delta_width + 1][3];
 		for(int i = A.getHeight() ; i <= B.getHeight(); i++){
 			for(int j = A.getWidth() ; j <= B.getWidth() ; j++){
-				pixels_returned[i][j] = pixels[i][j];
+				pixels_returned[Math.abs(i - delta_height)][Math.abs(j - delta_width)] = pixels[i][j];
 			}
 		}
 		

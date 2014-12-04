@@ -5,13 +5,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.StringTokenizer;
+
+import javax.swing.text.html.HTMLDocument.HTMLReader.PreAction;
+
+import point.Point;
 
 import messaging.Message;
 import messaging.MessageCenter;
 import messaging.MessageFlash;
 import messaging.MessageImage;
 import messaging.MessageLoad;
-import messaging.MessageSave;
+import messaging.MessageZoom;
 import types.FlashType;
 import types.TaskType;
 
@@ -170,6 +175,7 @@ public class SimulationManager {
 		/* 
 		 * Example of usage when the MessageCenter will be implemented *
 		*/ 
+		
 		Scanner sc ;
 		
 		sc = new Scanner(systemInString);
@@ -188,9 +194,57 @@ public class SimulationManager {
 			
 			image.generateId();
 			
-			Message messageFlash = new MessageFlash(TaskType.FLASH, image.getPixels(), image.getWidth(), image.getHeight(), FlashType.AUTO);
+			String preString = sc.next();
 			
-			MessageImage messageImage = (MessageImage)this.messageCenter.publish(messageFlash);
+			StringTokenizer tokenizer = new StringTokenizer(preString, "()=,;");
+			ArrayList<String> preTokens = new ArrayList<String>();
+			
+			while(tokenizer.hasMoreTokens()){
+				preTokens.add(tokenizer.nextToken());
+			}
+			
+			MessageFlash messageFlash = null;
+			MessageZoom messageZoom = null;
+			
+			//search for flash value
+			if(preTokens.contains("flash")){
+				/*
+				  create a flash object
+				  after "flash" keyword follows the type of the flash
+				  so we need to get the position of that value
+				  
+				*/
+				String flashType = preTokens.get(preTokens.indexOf("flash") +1 );
+				messageFlash = new MessageFlash(TaskType.FLASH, image.getPixels(), image.getWidth(), image.getHeight(), getFlashType(flashType));
+				
+				Flash flash = new Flash();
+				image = (MessageImage) flash.notify(messageFlash);
+			}
+			
+			if(preTokens.contains("zoom")){
+				int zoomPosition = preTokens.indexOf("zoom");
+				
+				String width_String_A = preTokens.get(zoomPosition + 1);
+				String height_String_A = preTokens.get(zoomPosition + 2);
+				String width_String_B = preTokens.get(zoomPosition + 3);
+				String height_String_B = preTokens.get(zoomPosition + 4); 
+				
+				Point A = new Point(Integer.parseInt(width_String_A), Integer.parseInt(height_String_A));
+				Point B = new Point(Integer.parseInt(width_String_B), Integer.parseInt(height_String_B));
+				
+				messageZoom = new MessageZoom(TaskType.ZOOM, image.getPixels(), A, B);
+				
+				Zoom zoom = new Zoom();
+				image = (MessageImage) zoom.notify(messageZoom);
+			}
+			
+			
+			
+			/*
+			 * Parse the photo section of the command
+			 * 
+			 */
+			String photoString = sc.next();
 			
 			
 			/*
@@ -204,7 +258,8 @@ public class SimulationManager {
 //			String[] items = pre.split(pre_delims);
 //			
 //			if(sc.next().equals("exit"))
-				break;
+//				break;
+				sc.close();
 		}
 		
 //		MessageLoad load = new MessageLoad(TaskType.IMAGE_LOAD, "image_input.jpg");
@@ -221,6 +276,21 @@ public class SimulationManager {
 	}
 	
 	
+	
+	public FlashType getFlashType(String stringValue){
+		switch (stringValue) {
+		case "on":
+			return FlashType.ON;
+		case "off":
+			return FlashType.OFF;
+		case "auto":
+			return FlashType.AUTO;
+
+		default:
+			return null; 
+		}
+	}
+	
 	/**
 	 * Main method
 	 * @param args program arguments
@@ -230,28 +300,30 @@ public class SimulationManager {
 			System.out.println("Usage: java SimulationManager <network_config_file>");
 			return;
 		}
-//		SimulationManager simulationManager = new SimulationManager(args[0]);
-//		simulationManager.start();
 		
-		MessageLoad load = new MessageLoad(TaskType.IMAGE_LOAD, "image_input.jpg");
-		ImageLoader loader = new  ImageLoader();
 		
-		Message imageMessage = loader.notify(load);
+		SimulationManager simulationManager = new SimulationManager(args[0]);
+		simulationManager.start();
 		
-		Flash flash = new Flash() ;
-		MessageFlash messageFlash = new MessageFlash(TaskType.FLASH, ((MessageImage)imageMessage).getPixels(), ((MessageImage)imageMessage).getWidth(),((MessageImage)imageMessage).getHeight(), FlashType.AUTO);
-		Message afterFlash = flash.notify(messageFlash);
-		
-		RawPhoto raw = new RawPhoto();
-		Message rawMessage = raw.notify(imageMessage);
-		
-		MessageImage messageImage = (MessageImage)rawMessage;
-		MessageImage afterflashMessage = (MessageImage)afterFlash;
-		MessageSave messageSaveFlash = new MessageSave(TaskType.IMAGE_SAVE, afterflashMessage.getPixels(), afterflashMessage.getWidth(), afterflashMessage.getHeight(), "result_flash.bmp");
-		MessageSave messageSave = new MessageSave(TaskType.IMAGE_SAVE, messageImage.getPixels(), messageImage.getWidth(), messageImage.getHeight(), "result.bmp");
-		ImageSaver saver = new ImageSaver();
-		saver.notify(messageSave);
-		saver.notify(messageSaveFlash);
+//		MessageLoad load = new MessageLoad(TaskType.IMAGE_LOAD, "image_input.jpg");
+//		ImageLoader loader = new  ImageLoader();
+//		
+//		Message imageMessage = loader.notify(load);
+//		
+//		Flash flash = new Flash() ;
+//		MessageFlash messageFlash = new MessageFlash(TaskType.FLASH, ((MessageImage)imageMessage).getPixels(), ((MessageImage)imageMessage).getWidth(),((MessageImage)imageMessage).getHeight(), FlashType.AUTO);
+//		Message afterFlash = flash.notify(messageFlash);
+//		
+//		RawPhoto raw = new RawPhoto();
+//		Message rawMessage = raw.notify(imageMessage);
+//		
+//		MessageImage messageImage = (MessageImage)rawMessage;
+//		MessageImage afterflashMessage = (MessageImage)afterFlash;
+//		MessageSave messageSaveFlash = new MessageSave(TaskType.IMAGE_SAVE, afterflashMessage.getPixels(), afterflashMessage.getWidth(), afterflashMessage.getHeight(), "result_flash.bmp");
+//		MessageSave messageSave = new MessageSave(TaskType.IMAGE_SAVE, messageImage.getPixels(), messageImage.getWidth(), messageImage.getHeight(), "result.bmp");
+//		ImageSaver saver = new ImageSaver();
+//		saver.notify(messageSave);
+//		saver.notify(messageSaveFlash);
 		
 		
 		

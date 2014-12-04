@@ -4,7 +4,7 @@ public class Point {
 
 	private int width ,height ;
 	
-	public Point(int width , int height){
+	public Point(Integer width , Integer height){
 		this.width = width ;
 		this.height = height ;
 	}
