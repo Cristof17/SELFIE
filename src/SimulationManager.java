@@ -34,9 +34,10 @@ import components.Zoom;
 
 
 public class SimulationManager {
+	private Scanner sc_master;
 	private MessageCenter messageCenter;
 
-	private String systemInString = "party.jpg selfie.jpg pre(flash=auto;zoom=100,100,300,400) photo(type=normal) post(black_white;blur)"+System.getProperty("line.separator")+ "exit";
+	private String systemInString = "images/image2.jpg output_image0.bmp pre(flash=off) photo(type=raw) post()";
 	
 	
 	// The values of the ArrayList are introduced in the constructor
@@ -172,16 +173,23 @@ public class SimulationManager {
 	 * Reads the commands from stdin and uses the messageCenter to solve all the tasks
 	 */
 	public void start() {
-		 
+		
+		sc_master = new Scanner(System.in);
+
 		while(true){
 		
+		String inString = sc_master.nextLine();
+			
 		Scanner sc ;
-		sc = new Scanner(System.in);
+		sc = new Scanner(inString);
 		
 			String first_word = sc.next();
 			
-			if(first_word.equals("exit"))
+			if(first_word.equals("exit")){
+				sc_master.close();
 				break;
+			}
+				
 			
 			String second_word = sc.next();
 			
@@ -393,6 +401,23 @@ public class SimulationManager {
 		
 		SimulationManager simulationManager = new SimulationManager(args[0]);
 		simulationManager.start();
+		
+		
+//		int val =0 ;
+//		int[][][] matrix = new int[5][5][3];
+//		for(int i =0 ; i < 5 ; i++){
+//			for(int j = 0 ; j < 5 ; j++){
+//				for(int k = 0 ; k < 3 ; k++){
+//					matrix[i][j][k] = val;
+//				}
+//				val ++ ;
+//			}
+//		}
+//	
+//		MessageZoom messageZoom = new MessageZoom(TaskType.ZOOM, matrix, new Point(2, 2), new Point(4, 4));
+//		Zoom zoom = new Zoom();
+//		zoom.notify(messageZoom);
+		
 		
 //		MessageLoad load = new MessageLoad(TaskType.IMAGE_LOAD, "image_input.jpg");
 //		ImageLoader loader = new  ImageLoader();

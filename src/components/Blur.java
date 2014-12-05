@@ -25,15 +25,17 @@ public class Blur extends Component{
 					float summ_red = 0 ;
 					float summ_green = 0;
 					float summ_blue = 0;
-					
-					summ_red = pixels[i+1][0][0] + pixels[0][j+1][0] + pixels[i+1][j+1][0];
-					summ_green = pixels[i+1][0][1] + pixels[0][j+1][1] + pixels[i+1][j+1][1];
-					summ_blue = pixels[i+1][0][2] + pixels[0][j+1][2] + pixels[i+1][j+1][2];
+					try{
+					summ_red = pixels[i+1][j][0] + pixels[i][j+1][0] + pixels[i+1][j+1][0];
+					summ_green = pixels[i+1][j][1] + pixels[i][j+1][1] + pixels[i+1][j+1][1];
+					summ_blue = pixels[i+1][j][2] + pixels[i][j+1][2] + pixels[i+1][j+1][2];
 					
 					pixels[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
 					pixels[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
 					pixels[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
-					
+					}catch(ArrayIndexOutOfBoundsException e){
+						System.out.println("Error");
+					}
 				}else if(i == 0 && j == width -1 ){ //upper-right corner
 					
 					float summ_red = 0 ;

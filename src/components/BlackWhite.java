@@ -17,11 +17,12 @@ public class BlackWhite extends Component{
 		MessageImage messageImage = (MessageImage)message ;
 		
 		int width = messageImage.getWidth();
-		int height = messageImage.getWidth();
+		int height = messageImage.getHeight();
 		int[][][] pixels = messageImage.getPixels();
 		
 		for(int i = 0 ; i < height ; i++){
 			for(int j = 0 ; j < width ; j++){
+				
 				int red_init = pixels[i][j][0] ;
 				int green_init = pixels[i][j][1];
 				int blue_init = pixels[i][j][2];

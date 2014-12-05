@@ -24,14 +24,13 @@ public class Zoom extends Component{
 		Point A = zoomMessage.getA();
 		Point B = zoomMessage.getB();
 		
-		
 		int delta_height = B.getHeight()-A.getHeight();
 		int delta_width = B.getWidth() - A.getWidth();
 		
 		int[][][] pixels_returned = new int[delta_height + 1][delta_width + 1][3];
-		for(int i = A.getHeight() ; i <= B.getHeight(); i++){
-			for(int j = A.getWidth() ; j <= B.getWidth() ; j++){
-				pixels_returned[Math.abs(i - delta_height)][Math.abs(j - delta_width)] = pixels[i][j];
+		for(int i = 0 ; i < delta_height + 1; i++){
+			for(int j =0 ; j < delta_width + 1 ; j++){
+				pixels_returned[i][j] = pixels[A.getHeight()+i][A.getWidth() + j];
 			}
 		}
 		
