@@ -69,9 +69,7 @@ public class Flash extends Component{
 			//do nothing 
 		}
 		
-		Message resulted = new MessageImage(TaskType.FLASH, pixels, width, height);
-		
-		return resulted;
+		return flashMessage;
 	}
 	
 	/**Helper method for verifying if the value of a pixel incremented

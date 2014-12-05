@@ -32,9 +32,7 @@ public class Sepia extends Component{
 			}
 		}
 		
-		MessageImage result = new MessageImage(TaskType.IMAGE_SAVE, pixels, width, height);
-		
-		return result;
+		return messageImage;
 	}
 
 	public int filterOverflow(float index1 ,float index2 ,float index3 ,int red_init , int blue_init , int green_init){

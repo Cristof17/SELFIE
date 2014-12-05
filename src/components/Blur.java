@@ -70,8 +70,8 @@ public class Blur extends Component{
 			}
 		}//end for 10
 		
-		MessageImage resulted = new MessageImage(TaskType.IMAGE_SAVE, aux, width, height);
-		return resulted;
+//		MessageImage resulted = new MessageImage(TaskType.IMAGE_SAVE, aux, width, height);
+		return messageImage;
 	}
 	
 	/**Method which replaces the value of a color if that value

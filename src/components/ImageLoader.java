@@ -26,6 +26,7 @@ public class ImageLoader extends Component {
 			
 			byte[] pixelsByte = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
 			int index = 0;
+			
 			int[][][] pixels = new int[bufferedImage.getHeight()][bufferedImage.getWidth()][3];
 			
 			messageImage.setHeight(bufferedImage.getHeight());

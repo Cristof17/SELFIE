@@ -33,9 +33,7 @@ public class BlackWhite extends Component{
 			}
 		}
 		
-		MessageImage resulted = new MessageImage(TaskType.IMAGE_SAVE , pixels , width ,height);
-		
-		return resulted ;
+		return messageImage ;
 	}
 
 	
