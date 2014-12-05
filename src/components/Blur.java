@@ -152,7 +152,7 @@ public class Blur extends Component{
 					
 					summ_red = pixels[i-1][j-1][0] + pixels[i-1][j][0] + pixels[i-1][j+1][0] + pixels[i][j+1][0] + pixels[i+1][j+1][0] + pixels[i+1][j][0] + pixels[i+1][j-1][0] + pixels[i][j-1][0];
 					summ_green = pixels[i-1][j-1][1] + pixels[i-1][j][1] + pixels[i-1][j+1][1] + pixels[i][j+1][1] + pixels[i+1][j+1][1] + pixels[i+1][j][1] + pixels[i+1][j-1][1] + pixels[i][j-1][1];
-					summ_red = pixels[i-1][j-1][2] + pixels[i-1][j][2] + pixels[i-1][j+1][2] + pixels[i][j+1][2] + pixels[i+1][j+1][2] + pixels[i+1][j][2] + pixels[i+1][j-1][2] + pixels[i][j-1][2];
+					summ_blue = pixels[i-1][j-1][2] + pixels[i-1][j][2] + pixels[i-1][j+1][2] + pixels[i][j+1][2] + pixels[i+1][j+1][2] + pixels[i+1][j][2] + pixels[i+1][j-1][2] + pixels[i][j-1][2];
 					
 					pixels[i][j][0] = filterOverflow(Math.round((float)summ_red / 8));
 					pixels[i][j][1] = filterOverflow(Math.round((float)summ_green / 8));
