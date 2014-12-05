@@ -21,9 +21,7 @@ public class RawPhoto extends Component{
 		int[][][] rotatedPixels = new int[height][width][3];
 		for(int i = 0 ; i < height ; i ++ ){
 			for(int j = 0 ; j < width ; j ++){
-				for(int k= 0 ; k < 3 ; k ++ ){
-					rotatedPixels[height-i-1][width -j -1][k] = pixels[i][j][k];
-				}
+				rotatedPixels[height-i-1][j] = pixels[i][j];
 			}
 		}
 		

@@ -37,8 +37,6 @@ public class SimulationManager {
 	private Scanner sc_master;
 	private MessageCenter messageCenter;
 
-	private String systemInString = "images/image2.jpg output_image0.bmp pre(flash=off) photo(type=raw) post()";
-	
 	
 	// The values of the ArrayList are introduced in the constructor
 	private ArrayList<MessageCenter> message_center_array = new ArrayList<MessageCenter>();
