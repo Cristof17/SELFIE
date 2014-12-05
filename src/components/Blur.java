@@ -26,6 +26,10 @@ public class Blur extends Component{
 			return resulted;
 		}
 		
+		int[][][] aux = messageImage.getPixels();
+		
+		for(int nr = 0 ; nr < 10 ; nr++){
+		
 		for(int i = 0 ; i < height ; i++){
 			for(int j = 0 ; j < width ; j++){
 				
@@ -34,17 +38,15 @@ public class Blur extends Component{
 					float summ_red = 0 ;
 					float summ_green = 0;
 					float summ_blue = 0;
-					try{
+					
 					summ_red = pixels[i+1][j][0] + pixels[i][j+1][0] + pixels[i+1][j+1][0];
 					summ_green = pixels[i+1][j][1] + pixels[i][j+1][1] + pixels[i+1][j+1][1];
 					summ_blue = pixels[i+1][j][2] + pixels[i][j+1][2] + pixels[i+1][j+1][2];
 					
-					pixels[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
-					pixels[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
-					pixels[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
-					}catch(ArrayIndexOutOfBoundsException e){
-						System.out.println("Error");
-					}
+					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
+					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
+					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
+					
 				}else if(i == 0 && j == width -1 ){ //upper-right corner
 					
 					float summ_red = 0 ;
@@ -55,9 +57,9 @@ public class Blur extends Component{
 					summ_green = pixels[i+1][j][1] + pixels[i][j-1][1] + pixels[i+1][j-1][1];
 					summ_blue = pixels[i+1][j][2] + pixels[i][j-1][2] + pixels[i+1][j-1][2];
 					
-					pixels[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
-					pixels[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
-					pixels[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
+					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
+					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
+					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
 				
 				}else if(i == height - 1 && j == 0){ //lower left corner
 					
@@ -69,9 +71,9 @@ public class Blur extends Component{
 					summ_green = pixels[i-1][j][1] + pixels[i-1][j+1][1] + pixels[i][j+1][1];
 					summ_blue = pixels[i-1][j][2] + pixels[i-1][j+1][2] + pixels[i][j+1][2];
 					
-					pixels[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
-					pixels[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
-					pixels[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
+					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
+					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
+					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
 					
 				}else if(i == height -1 && j == width -1 ){ //lower right corner
 					
@@ -83,9 +85,9 @@ public class Blur extends Component{
 					summ_green = pixels[i][j-1][1] + pixels[i-1][j-1][1] + pixels[i-1][j][1];
 					summ_blue = pixels[i][j-1][2] + pixels[i-1][j-1][2] + pixels[i-1][j][2];
 					
-					pixels[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
-					pixels[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
-					pixels[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
+					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
+					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
+					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
 					
 				}else if (i == 0 && j >=1 ){ //upper margin
 					
@@ -95,11 +97,11 @@ public class Blur extends Component{
 					
 					summ_red = pixels[i][j-1][0] + pixels[i+1][j-1][0] + pixels[i+1][j][0] + pixels[i+1][j+1][0] + pixels[i][j+1][0];
 					summ_green = pixels[i][j-1][1] + pixels[i+1][j-1][1] + pixels[i+1][j][1] + pixels[i+1][j+1][1] + pixels[i][j+1][1];
-					summ_red = pixels[i][j-1][0] + pixels[i+1][j-1][2] + pixels[i+1][j][2] + pixels[i+1][j+1][2] + pixels[i][j+1][2];
+					summ_blue = pixels[i][j-1][2] + pixels[i+1][j-1][2] + pixels[i+1][j][2] + pixels[i+1][j+1][2] + pixels[i][j+1][2];
 					
-					pixels[i][j][0] = filterOverflow(Math.round((float)summ_red / 5));
-					pixels[i][j][1] = filterOverflow(Math.round((float)summ_green / 5));
-					pixels[i][j][2] = filterOverflow(Math.round((float)summ_blue / 5));
+					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 5));
+					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 5));
+					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 5));
 					
 				}else if(i >= 1 && j==0){ //left margin
 					
@@ -111,9 +113,9 @@ public class Blur extends Component{
 					summ_green = pixels[i-1][j][1] + pixels[i-1][j+1][1] + pixels[i][j+1][1] + pixels[i+1][j+1][1] + pixels[i+1][j][1];
 					summ_blue = pixels[i-1][j][2] + pixels[i-1][j+1][2] + pixels[i][j+1][2]+pixels[i+1][j+1][2] + pixels[i+1][j][2];
 					
-					pixels[i][j][0] = filterOverflow(Math.round((float)summ_red / 5));
-					pixels[i][j][1] = filterOverflow(Math.round((float)summ_green / 5));
-					pixels[i][j][2] = filterOverflow(Math.round((float)summ_blue / 5));
+					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 5));
+					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 5));
+					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 5));
 					
 				}else if(i == height-1 && j >= 1){ //lower margin
 					
@@ -126,9 +128,9 @@ public class Blur extends Component{
 					summ_green = pixels[i][j-1][1] + pixels[i-1][j-1][1] + pixels[i-1][j][1] + pixels[i-1][j+1][1] + pixels[i][j+1][1];
 					summ_blue = pixels[i][j-1][2] + pixels[i-1][j-1][2] + pixels[i-1][j][2] + pixels[i-1][j+1][2] + pixels[i][j+1][2];
 					
-					pixels[i][j][0] = filterOverflow(Math.round((float)summ_red / 5));
-					pixels[i][j][1] = filterOverflow(Math.round((float)summ_green / 5));
-					pixels[i][j][2] = filterOverflow(Math.round((float)summ_blue / 5));
+					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 5));
+					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 5));
+					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 5));
 					
 				}else if(i >= 1 && j == width-1){ //right marging
 					
@@ -140,9 +142,9 @@ public class Blur extends Component{
 					summ_green = pixels[i-1][j][1] + pixels[i-1][j-1][1] + pixels[i][j-1][1] + pixels[i+1][j-1][1] + pixels[i+1][j][1];
 					summ_blue = pixels[i-1][j][2] + pixels[i-1][j-1][2] + pixels[i][j-1][2] + pixels[i+1][j-1][2] + pixels[i+1][j][2];
 					
-					pixels[i][j][0] = filterOverflow(Math.round((float)summ_red / 5));
-					pixels[i][j][1] = filterOverflow(Math.round((float)summ_green / 5));
-					pixels[i][j][2] = filterOverflow(Math.round((float)summ_blue / 5));
+					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 5));
+					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 5));
+					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 5));
 					
 				}else{ //point in the middle
 					
@@ -154,13 +156,15 @@ public class Blur extends Component{
 					summ_green = pixels[i-1][j-1][1] + pixels[i-1][j][1] + pixels[i-1][j+1][1] + pixels[i][j+1][1] + pixels[i+1][j+1][1] + pixels[i+1][j][1] + pixels[i+1][j-1][1] + pixels[i][j-1][1];
 					summ_blue = pixels[i-1][j-1][2] + pixels[i-1][j][2] + pixels[i-1][j+1][2] + pixels[i][j+1][2] + pixels[i+1][j+1][2] + pixels[i+1][j][2] + pixels[i+1][j-1][2] + pixels[i][j-1][2];
 					
-					pixels[i][j][0] = filterOverflow(Math.round((float)summ_red / 8));
-					pixels[i][j][1] = filterOverflow(Math.round((float)summ_green / 8));
-					pixels[i][j][2] = filterOverflow(Math.round((float)summ_blue / 8));
+					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 8));
+					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 8));
+					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 8));
 					
 				}
 			} //end j 
 		} // end i
+			pixels = aux ;
+		}//end for 10
 		
 		MessageImage resulted = new MessageImage(TaskType.IMAGE_SAVE, pixels, width, height);
 		return resulted;
