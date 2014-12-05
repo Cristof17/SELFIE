@@ -269,17 +269,16 @@ public class SimulationManager {
 				if(task.equals(TaskType.RAW_PHOTO)){
 					
 					image.setTaskType(TaskType.RAW_PHOTO);
-					image.generateId();
 					image = (MessageImage) this.messageCenter.publish(image);
+					image.generateId();
 					
 				}else if(task.equals(TaskType.NORMAL_PHOTO)){
 					
 					image.setTaskType(TaskType.RAW_PHOTO);
-					image.generateId();
 					image = (MessageImage) this.messageCenter.publish(image);
+					image.generateId();
 					
 					image.setTaskType(TaskType.NORMAL_PHOTO);
-					image.generateId();
 					image = (MessageImage) this.messageCenter.publish(image);
 					
 					image.generateId();

@@ -29,7 +29,8 @@ public class RawPhoto extends Component{
 			}
 		}
 		
-		return messageImage;
+		Message resulted = new MessageImage(TaskType.IMAGE_SAVE,pixels , width ,height);
+		return resulted;
 	}
 
 }
