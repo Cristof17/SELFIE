@@ -284,34 +284,7 @@ public class SimulationManager {
 					
 					image.generateId();
 				}
-				
-//				image.setTaskType(getPhotoType(photoTokens.get(typePosition + 1 )));
-//				image = (MessageImage) this.messageCenter.publish(image);
-//				image.generateId();
-				
-//				if (getPhotoType(photoTokens.get(typePosition + 1)).equals(TaskType.RAW_PHOTO)){
-//					
-//					image.setTaskType(TaskType.RAW_PHOTO);
-//					RawPhoto rawPhoto = new RawPhoto();
-//					
-//					image = (MessageImage) rawPhoto.notify(image);
-//					image.generateId();
-//					
-//				}else if(getPhotoType(photoTokens.get(typePosition + 1 )).equals(TaskType.NORMAL_PHOTO)){
-//					image.setTaskType(TaskType.RAW_PHOTO);
-//					
-//					RawPhoto rawPhoto = new RawPhoto() ;
-//					image = (MessageImage) rawPhoto.notify(image);
-//					
-//					image.generateId();
-//					
-//					image.setTaskType(TaskType.NORMAL_PHOTO);
-//					NormalPhoto normalPhoto = new NormalPhoto();
-//					image = (MessageImage) normalPhoto.notify(image);
-//					
-//					image.generateId();
-//					
-//				}
+	
 			}
 			
 			
@@ -345,27 +318,8 @@ public class SimulationManager {
 			 * figuring out the reading 
 			 * 
 			 */
-			
-//			String pre = sc.next();
-//			String pre_delims = "\\(\\=\\;\\,pre";
-//			String[] items = pre.split(pre_delims);
-//			
-//			if(sc.next().equals("exit"))
-//				break;
 				sc.close();
-		}
-		
-//		MessageLoad load = new MessageLoad(TaskType.IMAGE_LOAD, "image_input.jpg");
-//		MessageImage image = (MessageImage)this.messageCenter.publish(load);
-//		
-//		image.generateId(); //pentru ca utilizam acelasi mesaj image trebuie sa-i generam un nou id
-		
-//		MessageSave save = new MessageSave(TaskType.IMAGE_SAVE, 
-//					image.getPixels(), image.getWidth(), image.getHeight(), 
-//					"");
-//		MessageSuccess success = (MessageSuccess)this.messageCenter.publish(save);
-				
-		
+		}		
 	}
 	
 	public TaskType getPostType(String value){
@@ -421,45 +375,6 @@ public class SimulationManager {
 		
 		SimulationManager simulationManager = new SimulationManager(args[0]);
 		simulationManager.start();
-		
-		
-//		int val =0 ;
-//		int[][][] matrix = new int[5][5][3];
-//		for(int i =0 ; i < 5 ; i++){
-//			for(int j = 0 ; j < 5 ; j++){
-//				for(int k = 0 ; k < 3 ; k++){
-//					matrix[i][j][k] = val;
-//				}
-//				val ++ ;
-//			}
-//		}
-//	
-//		MessageZoom messageZoom = new MessageZoom(TaskType.ZOOM, matrix, new Point(2, 2), new Point(4, 4));
-//		Zoom zoom = new Zoom();
-//		zoom.notify(messageZoom);
-		
-		
-//		MessageLoad load = new MessageLoad(TaskType.IMAGE_LOAD, "image_input.jpg");
-//		ImageLoader loader = new  ImageLoader();
-//		
-//		Message imageMessage = loader.notify(load);
-//		
-//		Flash flash = new Flash() ;
-//		MessageFlash messageFlash = new MessageFlash(TaskType.FLASH, ((MessageImage)imageMessage).getPixels(), ((MessageImage)imageMessage).getWidth(),((MessageImage)imageMessage).getHeight(), FlashType.AUTO);
-//		Message afterFlash = flash.notify(messageFlash);
-//		
-//		RawPhoto raw = new RawPhoto();
-//		Message rawMessage = raw.notify(imageMessage);
-//		
-//		MessageImage messageImage = (MessageImage)rawMessage;
-//		MessageImage afterflashMessage = (MessageImage)afterFlash;
-//		MessageSave messageSaveFlash = new MessageSave(TaskType.IMAGE_SAVE, afterflashMessage.getPixels(), afterflashMessage.getWidth(), afterflashMessage.getHeight(), "result_flash.bmp");
-//		MessageSave messageSave = new MessageSave(TaskType.IMAGE_SAVE, messageImage.getPixels(), messageImage.getWidth(), messageImage.getHeight(), "result.bmp");
-//		ImageSaver saver = new ImageSaver();
-//		saver.notify(messageSave);
-//		saver.notify(messageSaveFlash);
-		
-		
 		
 	}
 
