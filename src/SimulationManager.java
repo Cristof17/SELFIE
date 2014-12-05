@@ -261,11 +261,33 @@ public class SimulationManager {
 			}
 			
 			if(photoTokens.contains("type")){
+				
 				int typePosition = photoTokens.indexOf("type") ;
 				
-				image.setTaskType(getPhotoType(photoTokens.get(typePosition + 1 )));
-				image = (MessageImage) this.messageCenter.publish(image);
-				image.generateId();
+				TaskType task = getPhotoType(photoTokens.get(typePosition + 1 ));
+				
+				if(task.equals(TaskType.RAW_PHOTO)){
+					
+					image.setTaskType(TaskType.RAW_PHOTO);
+					image.generateId();
+					image = (MessageImage) this.messageCenter.publish(image);
+					
+				}else if(task.equals(TaskType.NORMAL_PHOTO)){
+					
+					image.setTaskType(TaskType.RAW_PHOTO);
+					image.generateId();
+					image = (MessageImage) this.messageCenter.publish(image);
+					
+					image.setTaskType(TaskType.NORMAL_PHOTO);
+					image.generateId();
+					image = (MessageImage) this.messageCenter.publish(image);
+					
+					image.generateId();
+				}
+				
+//				image.setTaskType(getPhotoType(photoTokens.get(typePosition + 1 )));
+//				image = (MessageImage) this.messageCenter.publish(image);
+//				image.generateId();
 				
 //				if (getPhotoType(photoTokens.get(typePosition + 1)).equals(TaskType.RAW_PHOTO)){
 //					

@@ -17,6 +17,15 @@ public class Blur extends Component{
 		int height = messageImage.getHeight();
 		int [][][]pixels = messageImage.getPixels();
 		
+		if(width == 1 && height == 1){
+			pixels[0][0][0] = 0;
+			pixels[0][0][1] = 0;
+			pixels[0][0][2] = 0;
+			
+			MessageImage resulted = new MessageImage(TaskType.IMAGE_SAVE, pixels, width, height);
+			return resulted;
+		}
+		
 		for(int i = 0 ; i < height ; i++){
 			for(int j = 0 ; j < width ; j++){
 				
