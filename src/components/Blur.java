@@ -26,147 +26,180 @@ public class Blur extends Component{
 			return resulted;
 		}
 		
-		int[][][] aux = messageImage.getPixels();
+		int[][][] aux = new int[messageImage.getHeight()][messageImage.getWidth()][3];
 		
-		for(int nr = 0 ; nr < 10 ; nr++){
+		for(int nr = 0 ; nr < 10  ; nr++){
 		
 		for(int i = 0 ; i < height ; i++){
 			for(int j = 0 ; j < width ; j++){
 				
-				if(i == 0 && j == 0){ //upper-left corner ;
-					
-					float summ_red = 0 ;
-					float summ_green = 0;
-					float summ_blue = 0;
-					
-					summ_red = pixels[i+1][j][0] + pixels[i][j+1][0] + pixels[i+1][j+1][0];
-					summ_green = pixels[i+1][j][1] + pixels[i][j+1][1] + pixels[i+1][j+1][1];
-					summ_blue = pixels[i+1][j][2] + pixels[i][j+1][2] + pixels[i+1][j+1][2];
-					
-					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
-					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
-					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
-					
-				}else if(i == 0 && j == width -1 ){ //upper-right corner
-					
-					float summ_red = 0 ;
-					float summ_green = 0;
-					float summ_blue = 0;
-					
-					summ_red = pixels[i+1][j][0] + pixels[i][j-1][0] + pixels[i+1][j-1][0];
-					summ_green = pixels[i+1][j][1] + pixels[i][j-1][1] + pixels[i+1][j-1][1];
-					summ_blue = pixels[i+1][j][2] + pixels[i][j-1][2] + pixels[i+1][j-1][2];
-					
-					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
-					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
-					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
+//				if(i == 0 && j == 0){ //upper-left corner ;
+//					
+//					float summ_red = 0 ;
+//					float summ_green = 0;
+//					float summ_blue = 0;
+//					
+//					summ_red = pixels[i+1][j][0] + pixels[i][j+1][0] + pixels[i+1][j+1][0];
+//					summ_green = pixels[i+1][j][1] + pixels[i][j+1][1] + pixels[i+1][j+1][1];
+//					summ_blue = pixels[i+1][j][2] + pixels[i][j+1][2] + pixels[i+1][j+1][2];
+//					
+//					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
+//					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
+//					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
+//					
+//				}else if(i == 0 && j == width -1 ){ //upper-right corner
+//					
+//					float summ_red = 0 ;
+//					float summ_green = 0;
+//					float summ_blue = 0;
+//					
+//					summ_red = pixels[i+1][j][0] + pixels[i][j-1][0] + pixels[i+1][j-1][0];
+//					summ_green = pixels[i+1][j][1] + pixels[i][j-1][1] + pixels[i+1][j-1][1];
+//					summ_blue = pixels[i+1][j][2] + pixels[i][j-1][2] + pixels[i+1][j-1][2];
+//					
+//					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
+//					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
+//					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
+//				
+//				}else if(i == height - 1 && j == 0){ //lower left corner
+//					
+//					float summ_red = 0 ;
+//					float summ_green = 0;
+//					float summ_blue = 0;
+//					
+//					summ_red = pixels[i-1][j][0] + pixels[i-1][j+1][0] + pixels[i][j+1][0];
+//					summ_green = pixels[i-1][j][1] + pixels[i-1][j+1][1] + pixels[i][j+1][1];
+//					summ_blue = pixels[i-1][j][2] + pixels[i-1][j+1][2] + pixels[i][j+1][2];
+//					
+//					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
+//					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
+//					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
+//					
+//				}else if(i == height -1 && j == width -1 ){ //lower right corner
+//					
+//					float summ_red = 0 ;
+//					float summ_green = 0;
+//					float summ_blue = 0;
+//					
+//					summ_red = pixels[i][j-1][0] + pixels[i-1][j-1][0] + pixels[i-1][j][0];
+//					summ_green = pixels[i][j-1][1] + pixels[i-1][j-1][1] + pixels[i-1][j][1];
+//					summ_blue = pixels[i][j-1][2] + pixels[i-1][j-1][2] + pixels[i-1][j][2];
+//					
+//					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
+//					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
+//					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
+//					
+//				}else if (i == 0 && j >=1 && j<width-1){ //upper margin
+//					
+//					float summ_red = 0 ;
+//					float summ_green = 0;
+//					float summ_blue = 0;
+//					
+//					
+//					summ_red = pixels[i][j-1][0] + pixels[i+1][j-1][0] + pixels[i+1][j][0] + pixels[i+1][j+1][0] + pixels[i][j+1][0];
+//					summ_green = pixels[i][j-1][1] + pixels[i+1][j-1][1] + pixels[i+1][j][1] + pixels[i+1][j+1][1] + pixels[i][j+1][1];
+//					summ_blue = pixels[i][j-1][2] + pixels[i+1][j-1][2] + pixels[i+1][j][2] + pixels[i+1][j+1][2] + pixels[i][j+1][2];
+//					
+//					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 5));
+//					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 5));
+//					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 5));
+//					
+//				}else if(i >= 1 && j==0 && i<height-1){ //left margin
+//					
+//					float summ_red = 0 ;
+//					float summ_green = 0;
+//					float summ_blue = 0;
+//					
+//					summ_red = pixels[i-1][j][0] + pixels[i-1][j+1][0] + pixels[i][j+1][0] + pixels[i+1][j+1][0] + pixels[i+1][j][0];
+//					summ_green = pixels[i-1][j][1] + pixels[i-1][j+1][1] + pixels[i][j+1][1] + pixels[i+1][j+1][1] + pixels[i+1][j][1];
+//					summ_blue = pixels[i-1][j][2] + pixels[i-1][j+1][2] + pixels[i][j+1][2]+pixels[i+1][j+1][2] + pixels[i+1][j][2];
+//					
+//					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 5));
+//					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 5));
+//					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 5));
+//					
+//				}else if(i == height-1 && j >= 1 && j<width-1){ //lower margin
+//					
+//					
+//					float summ_red = 0 ;
+//					float summ_green = 0;
+//					float summ_blue = 0;
+//					
+//					summ_red = pixels[i][j-1][0] + pixels[i-1][j-1][0] + pixels[i-1][j][0] + pixels[i-1][j+1][0] + pixels[i][j+1][0];
+//					summ_green = pixels[i][j-1][1] + pixels[i-1][j-1][1] + pixels[i-1][j][1] + pixels[i-1][j+1][1] + pixels[i][j+1][1];
+//					summ_blue = pixels[i][j-1][2] + pixels[i-1][j-1][2] + pixels[i-1][j][2] + pixels[i-1][j+1][2] + pixels[i][j+1][2];
+//					
+//					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 5));
+//					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 5));
+//					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 5));
+//					
+//				}else if(i >= 1 && j == width-1 && i<height-1){ //right marging
+//					
+//					float summ_red = 0 ;
+//					float summ_green = 0;
+//					float summ_blue = 0;
+//					
+//					summ_red = pixels[i-1][j][0] + pixels[i-1][j-1][0] + pixels[i][j-1][0] + pixels[i+1][j-1][0] + pixels[i+1][j][0];
+//					summ_green = pixels[i-1][j][1] + pixels[i-1][j-1][1] + pixels[i][j-1][1] + pixels[i+1][j-1][1] + pixels[i+1][j][1];
+//					summ_blue = pixels[i-1][j][2] + pixels[i-1][j-1][2] + pixels[i][j-1][2] + pixels[i+1][j-1][2] + pixels[i+1][j][2];
+//					
+//					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 5));
+//					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 5));
+//					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 5));
+//					
+//				}else{ //point in the middle
+//					
+//					float summ_red = 0 ;
+//					float summ_green = 0;
+//					float summ_blue = 0;
+//					
+//					summ_red = pixels[i-1][j-1][0] + pixels[i-1][j][0] + pixels[i-1][j+1][0] + pixels[i][j+1][0] + pixels[i+1][j+1][0] + pixels[i+1][j][0] + pixels[i+1][j-1][0] + pixels[i+1][j-1][0];
+//					summ_green = pixels[i-1][j-1][1] + pixels[i-1][j][1] + pixels[i-1][j+1][1] + pixels[i][j+1][1] + pixels[i+1][j+1][1] + pixels[i+1][j][1] + pixels[i+1][j-1][1] + pixels[i+1][j-1][1];
+//					summ_blue = pixels[i-1][j-1][2] + pixels[i-1][j][2] + pixels[i-1][j+1][2] + pixels[i][j+1][2] + pixels[i+1][j+1][2] + pixels[i+1][j][2] + pixels[i+1][j-1][2] + pixels[i+1][j-1][2];
+//					
+//					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 8));
+//					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 8));
+//					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 8));
+//					
+//				}
 				
-				}else if(i == height - 1 && j == 0){ //lower left corner
-					
-					float summ_red = 0 ;
-					float summ_green = 0;
-					float summ_blue = 0;
-					
-					summ_red = pixels[i-1][j][0] + pixels[i-1][j+1][0] + pixels[i][j+1][0];
-					summ_green = pixels[i-1][j][1] + pixels[i-1][j+1][1] + pixels[i][j+1][1];
-					summ_blue = pixels[i-1][j][2] + pixels[i-1][j+1][2] + pixels[i][j+1][2];
-					
-					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
-					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
-					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
-					
-				}else if(i == height -1 && j == width -1 ){ //lower right corner
-					
-					float summ_red = 0 ;
-					float summ_green = 0;
-					float summ_blue = 0;
-					
-					summ_red = pixels[i][j-1][0] + pixels[i-1][j-1][0] + pixels[i-1][j][0];
-					summ_green = pixels[i][j-1][1] + pixels[i-1][j-1][1] + pixels[i-1][j][1];
-					summ_blue = pixels[i][j-1][2] + pixels[i-1][j-1][2] + pixels[i-1][j][2];
-					
-					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 3));
-					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 3));
-					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 3));
-					
-				}else if (i == 0 && j >=1 ){ //upper margin
-					
-					float summ_red = 0 ;
-					float summ_green = 0;
-					float summ_blue = 0;
-					
-					summ_red = pixels[i][j-1][0] + pixels[i+1][j-1][0] + pixels[i+1][j][0] + pixels[i+1][j+1][0] + pixels[i][j+1][0];
-					summ_green = pixels[i][j-1][1] + pixels[i+1][j-1][1] + pixels[i+1][j][1] + pixels[i+1][j+1][1] + pixels[i][j+1][1];
-					summ_blue = pixels[i][j-1][2] + pixels[i+1][j-1][2] + pixels[i+1][j][2] + pixels[i+1][j+1][2] + pixels[i][j+1][2];
-					
-					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 5));
-					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 5));
-					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 5));
-					
-				}else if(i >= 1 && j==0){ //left margin
-					
-					float summ_red = 0 ;
-					float summ_green = 0;
-					float summ_blue = 0;
-					
-					summ_red = pixels[i-1][j][0] + pixels[i-1][j+1][0] + pixels[i][j+1][0] + pixels[i+1][j+1][0] + pixels[i+1][j][0];
-					summ_green = pixels[i-1][j][1] + pixels[i-1][j+1][1] + pixels[i][j+1][1] + pixels[i+1][j+1][1] + pixels[i+1][j][1];
-					summ_blue = pixels[i-1][j][2] + pixels[i-1][j+1][2] + pixels[i][j+1][2]+pixels[i+1][j+1][2] + pixels[i+1][j][2];
-					
-					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 5));
-					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 5));
-					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 5));
-					
-				}else if(i == height-1 && j >= 1){ //lower margin
-					
-					
-					float summ_red = 0 ;
-					float summ_green = 0;
-					float summ_blue = 0;
-					
-					summ_red = pixels[i][j-1][0] + pixels[i-1][j-1][0] + pixels[i-1][j][0] + pixels[i-1][j+1][0] + pixels[i][j+1][0];
-					summ_green = pixels[i][j-1][1] + pixels[i-1][j-1][1] + pixels[i-1][j][1] + pixels[i-1][j+1][1] + pixels[i][j+1][1];
-					summ_blue = pixels[i][j-1][2] + pixels[i-1][j-1][2] + pixels[i-1][j][2] + pixels[i-1][j+1][2] + pixels[i][j+1][2];
-					
-					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 5));
-					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 5));
-					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 5));
-					
-				}else if(i >= 1 && j == width-1){ //right marging
-					
-					float summ_red = 0 ;
-					float summ_green = 0;
-					float summ_blue = 0;
-					
-					summ_red = pixels[i-1][j][0] + pixels[i-1][j-1][0] + pixels[i][j-1][0] + pixels[i+1][j-1][0] + pixels[i+1][j][0];
-					summ_green = pixels[i-1][j][1] + pixels[i-1][j-1][1] + pixels[i][j-1][1] + pixels[i+1][j-1][1] + pixels[i+1][j][1];
-					summ_blue = pixels[i-1][j][2] + pixels[i-1][j-1][2] + pixels[i][j-1][2] + pixels[i+1][j-1][2] + pixels[i+1][j][2];
-					
-					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 5));
-					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 5));
-					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 5));
-					
-				}else{ //point in the middle
-					
-					float summ_red = 0 ;
-					float summ_green = 0;
-					float summ_blue = 0;
-					
-					summ_red = pixels[i-1][j-1][0] + pixels[i-1][j][0] + pixels[i-1][j+1][0] + pixels[i][j+1][0] + pixels[i+1][j+1][0] + pixels[i+1][j][0] + pixels[i+1][j-1][0] + pixels[i][j-1][0];
-					summ_green = pixels[i-1][j-1][1] + pixels[i-1][j][1] + pixels[i-1][j+1][1] + pixels[i][j+1][1] + pixels[i+1][j+1][1] + pixels[i+1][j][1] + pixels[i+1][j-1][1] + pixels[i][j-1][1];
-					summ_blue = pixels[i-1][j-1][2] + pixels[i-1][j][2] + pixels[i-1][j+1][2] + pixels[i][j+1][2] + pixels[i+1][j+1][2] + pixels[i+1][j][2] + pixels[i+1][j-1][2] + pixels[i][j-1][2];
-					
-					aux[i][j][0] = filterOverflow(Math.round((float)summ_red / 8));
-					aux[i][j][1] = filterOverflow(Math.round((float)summ_green / 8));
-					aux[i][j][2] = filterOverflow(Math.round((float)summ_blue / 8));
-					
+				int summ_red = 0;
+				int summ_green = 0;
+				int summ_blue = 0;
+				int vecini = 0;
+				
+				for(int m = i-1 ; m<= i+1 ; m++){
+					for(int n = j-1 ; n <= j+1 ;n++ ){
+						if(m < 0 || m > height-1 )
+							continue;
+						if(n < 0 || n > width -1)
+							continue;
+						if(m == i && n == j)
+							continue;
+						
+						summ_red += pixels[m][n][0];
+						summ_green += pixels[m][n][1];
+						summ_blue += pixels[m][n][2];
+						vecini ++ ;
+						
+						aux[i][j][0] =(int) Math.round(((double)summ_red/(double)vecini));
+						aux[i][j][1] =(int) Math.round(((double)summ_green/(double)vecini));
+						aux[i][j][2] =(int) Math.round(((double)summ_blue/(double)vecini));
+						
+					}	
 				}
 			} //end j 
 		} // end i
-			pixels = aux ;
+		//copy the matrix
+			for(int i = 0 ; i < height ; i++){
+				for(int j = 0 ; j < width ; j++){
+					for(int k = 0 ; k < 3 ; k++)
+						pixels[i][j][k] = aux[i][j][k];
+				}
+			}
 		}//end for 10
 		
-		MessageImage resulted = new MessageImage(TaskType.IMAGE_SAVE, pixels, width, height);
+		MessageImage resulted = new MessageImage(TaskType.IMAGE_SAVE, aux, width, height);
 		return resulted;
 	}
 	
@@ -177,11 +210,11 @@ public class Blur extends Component{
 	 * @return The value itself if it is not greater than 255 , and 255 
 	 * if the value is greater than 255
 	 */
-	public int filterOverflow(int value ){
+	public int filterOverflow(float value){
 		if (value > 255){
 			return 255;
 		}else{
-			return value ;
+			return (int)value ;
 		}
 	}
 	
