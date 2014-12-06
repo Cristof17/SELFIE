@@ -53,9 +53,9 @@ public class Blur extends Component{
 						summ_blue += pixels[m][n][2];
 						vecini ++ ;
 						
-						aux[i][j][0] =(int) Math.round(((double)summ_red/(double)vecini));
-						aux[i][j][1] =(int) Math.round(((double)summ_green/(double)vecini));
-						aux[i][j][2] =(int) Math.round(((double)summ_blue/(double)vecini));
+						aux[i][j][0] =filterOverflow( Math.round(((double)summ_red/(double)vecini)));
+						aux[i][j][1] =filterOverflow(Math.round(((double)summ_green/(double)vecini)));
+						aux[i][j][2] =filterOverflow(Math.round(((double)summ_blue/(double)vecini)));
 						
 					}	
 				}
@@ -81,7 +81,7 @@ public class Blur extends Component{
 	 * @return The value itself if it is not greater than 255 , and 255 
 	 * if the value is greater than 255
 	 */
-	public int filterOverflow(float value){
+	public int filterOverflow(double value){
 		if (value > 255){
 			return 255;
 		}else{

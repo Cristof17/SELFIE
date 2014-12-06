@@ -30,11 +30,11 @@ public class Flash extends Component{
 		if(flashMessage.getFlashType().equals(FlashType.AUTO)){
 			for(int i = 0 ; i < height ; i++){
 				for(int j = 0 ; j < width ; j++){
-					summ += Math.round(0.2126* pixels[i][j][0] + 0.7152* pixels[i][j][1] + 0.0722 * pixels[i][j][2] );
+					summ +=(int) Math.round(0.2126* pixels[i][j][0] + 0.7152* pixels[i][j][1] + 0.0722 * pixels[i][j][2] );
 				}
 			}
 		
-			int averege = summ / (width * height);
+			double averege = summ / (width * height);
 			if (averege < 60) {
 				for (int i = 0; i < height; i++) {
 					for (int j = 0; j < width; j++) {
@@ -43,18 +43,19 @@ public class Flash extends Component{
 						pixels[i][j][2] = checkPixelMax(pixels[i][j][2], 50);
 					}
 				}
-			} else {
-				for (int i = 0; i < height; i++) {
-					for (int j = 0; j < width; j++) {
-						pixels[i][j][0] = checkPixelMax(pixels[i][j][0],
-								averege);
-						pixels[i][j][1] = checkPixelMax(pixels[i][j][1],
-								averege);
-						pixels[i][j][2] = checkPixelMax(pixels[i][j][2],
-								averege);
-					}
-				}
-			}
+			} 
+//			else {
+//				for (int i = 0; i < height; i++) {
+//					for (int j = 0; j < width; j++) {
+//						pixels[i][j][0] = checkPixelMax(pixels[i][j][0],
+//								averege);
+//						pixels[i][j][1] = checkPixelMax(pixels[i][j][1],
+//								averege);
+//						pixels[i][j][2] = checkPixelMax(pixels[i][j][2],
+//								averege);
+//					}
+//				}
+//			}
 			
 		}else if(flashMessage.getFlashType().equals(FlashType.ON)){
 			for(int i = 0 ; i < height ; i++){
@@ -68,8 +69,8 @@ public class Flash extends Component{
 		}else if(flashMessage.getFlashType().equals(FlashType.OFF)){
 			//do nothing 
 		}
-		
-		return flashMessage;
+		MessageImage result  = new MessageImage(TaskType.IMAGE_SAVE,pixels ,width ,height);
+		return result;
 	}
 	
 	/**Helper method for verifying if the value of a pixel incremented

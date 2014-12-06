@@ -1,15 +1,13 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-
-import javax.swing.text.html.HTMLDocument.HTMLReader.PreAction;
-
-import point.Point;
 
 import messaging.Message;
 import messaging.MessageCenter;
@@ -18,6 +16,7 @@ import messaging.MessageImage;
 import messaging.MessageLoad;
 import messaging.MessageSave;
 import messaging.MessageZoom;
+import point.Point;
 import types.FlashType;
 import types.TaskType;
 
@@ -47,10 +46,10 @@ public class SimulationManager {
 			this.messageCenter = buildNetwork(networkConfigFile);
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			System.err.println("File not found ");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			System.err.println("IOException");
 			e.printStackTrace();
 		}
 	}
@@ -119,10 +118,10 @@ public class SimulationManager {
 			@Override
 			protected Message publishAlgorithm(Message message) {
 				
-				if(hasBeenHereBefore(message))
+				if(hasBeenHereBefore(message.getId()))
 					return null;
 				
-				addMessage(message);
+				addMessage(message.getId());
 				Message received =  processMessage(message);
 				
 			return received ;
@@ -168,6 +167,7 @@ public class SimulationManager {
 	
 	
 	/**
+	 * 
 	 * Reads the commands from stdin and uses the messageCenter to solve all the tasks
 	 */
 	public void start() {
@@ -199,8 +199,6 @@ public class SimulationManager {
 			MessageImage image =  (MessageImage) this.messageCenter.publish(messageLoad);
 			
 			image.generateId();
-			
-			
 			
 			String preString = sc.next();
 			
@@ -269,17 +267,19 @@ public class SimulationManager {
 				if(task.equals(TaskType.RAW_PHOTO)){
 					
 					image.setTaskType(TaskType.RAW_PHOTO);
-					image.generateId();
+
 					image = (MessageImage) this.messageCenter.publish(image);
 					
+					image.generateId();
 				}else if(task.equals(TaskType.NORMAL_PHOTO)){
 					
 					image.setTaskType(TaskType.RAW_PHOTO);
-					image.generateId();
+					
 					image = (MessageImage) this.messageCenter.publish(image);
 					
-					image.setTaskType(TaskType.NORMAL_PHOTO);
 					image.generateId();
+					image.setTaskType(TaskType.NORMAL_PHOTO);
+					
 					image = (MessageImage) this.messageCenter.publish(image);
 					
 					image.generateId();
@@ -305,7 +305,9 @@ public class SimulationManager {
 			for(String s : postTokens){
 				
 				image.setTaskType(getPostType(s));
+				
 				image = (MessageImage) this.messageCenter.publish(image);
+				
 				image.generateId();
 				
 			}
@@ -367,6 +369,12 @@ public class SimulationManager {
 	 * @param args program arguments
 	 */
 	public static void main(String[] args) {
+//		try {
+//			System.setOut(new PrintStream(new FileOutputStream("outbox.txt")));
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		if(args.length != 1) {
 			System.out.println("Usage: java SimulationManager <network_config_file>");
 			return;
