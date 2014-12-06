@@ -119,7 +119,7 @@ public class SimulationManager {
 			@Override
 			protected Message publishAlgorithm(Message message) {
 				
-				if(hasBeenHereBefore(message))
+				if(hasBeenHereBefore(message.getId()))
 					return null;
 				
 				addMessage(message);
@@ -303,9 +303,13 @@ public class SimulationManager {
 			
 			for(String s : postTokens){
 				
-				image.setTaskType(getPostType(s));
-				image = (MessageImage) this.messageCenter.publish(image);
 				image.generateId();
+				image.setTaskType(getPostType(s));
+				
+				image = (MessageImage) this.messageCenter.publish(image);
+				
+				image.generateId();
+				
 				
 			}
 			

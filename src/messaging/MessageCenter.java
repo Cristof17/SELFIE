@@ -7,7 +7,7 @@ import components.Component;
 public abstract class MessageCenter {
 	
 	private String centerName;
-	private ArrayList<Message> publishedMessages = new ArrayList<Message>();
+	private ArrayList<Integer> publishedMessages = new ArrayList<Integer>();
 	private ArrayList<Component> components = new ArrayList<Component>() ;
 	private ArrayList<MessageCenter> neighbors ; 
 		
@@ -63,15 +63,15 @@ public abstract class MessageCenter {
 	 * @param message The message to be checked
 	 * @return Returns true if the message has been here before
 	 */
-	public boolean hasBeenHereBefore(Message message){
-		if(this.publishedMessages.contains(message))
+	public boolean hasBeenHereBefore(Integer ID){
+		if(this.publishedMessages.contains(ID))
 			return true ;
 		else
 			return false; 
 	}
 	
 	public void addMessage(Message message){
-		this.publishedMessages.add(message);
+		this.publishedMessages.add(message.getId());
 	}
 	
 	
