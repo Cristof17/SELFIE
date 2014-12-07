@@ -13,8 +13,14 @@ public class NormalPhoto extends Component {
 	}
 
 	@Override
+	/**
+	 * This method gets called by the MessageCenter in order for this 
+	 * component to process the given Message
+	 * 
+	 * This message at a minimum level should have the same
+	 * functionality as RawPhoto Component
+	 */
 	public Message notify(Message message) {
-		
 		return raw.notify(message);
 	}
 

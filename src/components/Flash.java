@@ -7,9 +7,6 @@ import types.FlashType;
 import types.TaskType;
 
 
-/*
- * superficially implemented class 
- */
 public class Flash extends Component{
 
 	public Flash() {
@@ -17,6 +14,10 @@ public class Flash extends Component{
 	}
 
 	@Override
+	/**
+	 * This method gets called by the MessageCenter in order for this 
+	 * component to process the given Message
+	 */
 	public Message notify(Message message) {
 		
 		MessageFlash flashMessage = (MessageFlash)message ;
@@ -24,7 +25,7 @@ public class Flash extends Component{
 		int width = flashMessage.getWidth();
 		int height = flashMessage.getHeight();
 		
-		
+		//summ of all the pixels' values
 		int summ = 0 ;
 		
 		if(flashMessage.getFlashType().equals(FlashType.AUTO)){
@@ -34,6 +35,7 @@ public class Flash extends Component{
 				}
 			}
 		
+			// averege value to see if there is a need for flash 
 			double averege = summ / (width * height);
 			if (averege < 60) {
 				for (int i = 0; i < height; i++) {
@@ -44,18 +46,6 @@ public class Flash extends Component{
 					}
 				}
 			} 
-//			else {
-//				for (int i = 0; i < height; i++) {
-//					for (int j = 0; j < width; j++) {
-//						pixels[i][j][0] = checkPixelMax(pixels[i][j][0],
-//								averege);
-//						pixels[i][j][1] = checkPixelMax(pixels[i][j][1],
-//								averege);
-//						pixels[i][j][2] = checkPixelMax(pixels[i][j][2],
-//								averege);
-//					}
-//				}
-//			}
 			
 		}else if(flashMessage.getFlashType().equals(FlashType.ON)){
 			for(int i = 0 ; i < height ; i++){
@@ -69,6 +59,8 @@ public class Flash extends Component{
 		}else if(flashMessage.getFlashType().equals(FlashType.OFF)){
 			//do nothing 
 		}
+		//return the image using a MessageImage object so that other filters can use it in the
+		//post capture phase
 		MessageImage result  = new MessageImage(TaskType.IMAGE_SAVE,pixels ,width ,height);
 		return result;
 	}

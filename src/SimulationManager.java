@@ -1,10 +1,8 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -37,7 +35,6 @@ public class SimulationManager {
 	private MessageCenter messageCenter;
 
 	
-	// The values of the ArrayList are introduced in the constructor
 	private ArrayList<MessageCenter> message_center_array = new ArrayList<MessageCenter>();
 	
 	public SimulationManager(String networkConfigFile) {
@@ -111,7 +108,15 @@ public class SimulationManager {
 		return message_center_array.get(0);
 	}
 	
-		
+	
+	/**This method creates a new MessageCenter and returns it 
+	 * with the right name .
+	 * 
+	 * 
+	 * @param name The name of the MessageCenter
+	 * @return A new MessageCenter . The object is created by calling "new" on 
+	 * an anonymous class .
+	 */
 	public MessageCenter getNewMessageCenter(String name){
 		return new MessageCenter(name) {
 			
@@ -130,7 +135,13 @@ public class SimulationManager {
 	}
 	
 	
-	
+	/**This method returns a MessageCenter from the array
+	 * based on its name
+	 * 
+	 * @param name The name of the MessageCenter to be searched through 
+	 * the MessageCenters array 
+	 * @return The MessageCenter that has the name given as a parameter
+	 */
 	public MessageCenter getMessageCenterFromArray(String name){
 		for(MessageCenter c : message_center_array){
 			if(c.getCenterName().equals(name))
@@ -139,6 +150,13 @@ public class SimulationManager {
 	return null ;
 	}
 	
+	
+	/**This method returns a new Component depending on the type of the component
+	 * 
+	 * @param type The type of the component needed ; This is given as a string from
+	 * the input file
+	 * @return The specific component based on its String type
+	 */
 	public Component getSpecificComponent(String type){
 		
 		switch (type) {
@@ -172,12 +190,15 @@ public class SimulationManager {
 	 */
 	public void start() {
 		
+		//Scanner to go through the whole file
 		sc_master = new Scanner(System.in);
 
 		while(true){
 		
 		String inString = sc_master.nextLine();
-			
+		
+		//Scanner to go through a line of the file . The line is given as a String by
+		// the master scanner
 		Scanner sc ;
 		sc = new Scanner(inString);
 		
@@ -195,18 +216,20 @@ public class SimulationManager {
 			 * Build MessageLoad using the input_file's name 
 			 */
 			Message messageLoad = new MessageLoad(TaskType.IMAGE_LOAD, first_word);
-			
 			MessageImage image =  (MessageImage) this.messageCenter.publish(messageLoad);
 			
 			image.generateId();
 			
-			String preString = sc.next();
+			/*
+			 * String which holds the precapture substring of the line 
+			 */
+			String preString = sc.next(); 
 			
 			StringTokenizer tokenizer = new StringTokenizer(preString, "()=,;");
-			ArrayList<String> preTokens = new ArrayList<String>();
+			ArrayList<String> preTokens = new ArrayList<String>(); //split the substring into its components
 			
 			while(tokenizer.hasMoreTokens()){
-				preTokens.add(tokenizer.nextToken());
+				preTokens.add(tokenizer.nextToken()); //generate components based of the string values
 			}
 			
 
@@ -215,19 +238,31 @@ public class SimulationManager {
 			//search for flash value
 			if(preTokens.contains("flash")){
 				/*
-				  create a flash object
+				  create a flash object ;
 				  after "flash" keyword follows the type of the flash
 				  so we need to get the position of that value
 				  
 				*/
-				String flashType = preTokens.get(preTokens.indexOf("flash") +1 );
-				MessageFlash messageFlash = new MessageFlash(TaskType.FLASH, image.getPixels(), image.getWidth(), image.getHeight(), getFlashType(flashType));
+				String flashType = preTokens.get(preTokens.indexOf("flash") +1 ); //flash type
 				
-				image = (MessageImage) this.messageCenter.publish(messageFlash);		
+				//Create the message and send it 
+				MessageFlash messageFlash = new MessageFlash(TaskType.FLASH, image.getPixels(), image.getWidth(), image.getHeight(), getFlashType(flashType));
+				image = (MessageImage) this.messageCenter.publish(messageFlash);
+				
 				image.generateId();
 			}
 			
+			
+			/*
+			 *Check to see if the substring from the precapture substring contains
+			 *the "zoom" keyword in order to create a Zoom Component after 
+			 */
 			if(preTokens.contains("zoom")){
+				/*
+				 * if the "zoom" keyword exists 
+				 * get its position in the tokens array so that 
+				 * we can create Point Objects containing the coordinates
+				 */
 				int zoomPosition = preTokens.indexOf("zoom");
 				
 				String width_String_A = preTokens.get(zoomPosition + 1);
@@ -235,46 +270,59 @@ public class SimulationManager {
 				String width_String_B = preTokens.get(zoomPosition + 3);
 				String height_String_B = preTokens.get(zoomPosition + 4); 
 				
+				/*
+				 * Two objects that contain the values of the two corners
+				 * A - upper - left corner
+				 * B - lower - right corner
+				 */
 				Point A = new Point(Integer.parseInt(width_String_A), Integer.parseInt(height_String_A));
 				Point B = new Point(Integer.parseInt(width_String_B), Integer.parseInt(height_String_B));
 				
+				//Create the message and send it 
 				messageZoom = new MessageZoom(TaskType.ZOOM, image.getPixels(), A, B);
-				
 				image = (MessageImage) this.messageCenter.publish(messageZoom);
 				image.generateId();
+				
 			}
 			
 			
 			
 			/*
-			 * Parse the photo section of the command
+			 * Parse the Capture Phase substring of the line .
 			 * 
 			 */
 			String photoString = sc.next();
 			tokenizer = new StringTokenizer(photoString,"()=");
+			//ArrayList holding the tokens of the substring
 			ArrayList<String> photoTokens = new ArrayList<String>();
 			
 			while(tokenizer.hasMoreTokens()){
+				//add the tokens retrieved in the ArrayList
 				photoTokens.add(tokenizer.nextToken());
 			}
 			
 			if(photoTokens.contains("type")){
-				
+				/*get the position in the array of type word
+				 * in order to get the next token which can be "raw" or "normal" 
+				 */
 				int typePosition = photoTokens.indexOf("type") ;
 				
 				TaskType task = getPhotoType(photoTokens.get(typePosition + 1 ));
 				
 				if(task.equals(TaskType.RAW_PHOTO)){
 					
+					//send the message to the MessageCenter
 					image.setTaskType(TaskType.RAW_PHOTO);
-
 					image = (MessageImage) this.messageCenter.publish(image);
 					
 					image.generateId();
 				}else if(task.equals(TaskType.NORMAL_PHOTO)){
 					
+					/*
+					 * If the photo needs to be normal we first need to 
+					 * apply rotate on it in order to get to the normal position
+					 */
 					image.setTaskType(TaskType.RAW_PHOTO);
-					
 					image = (MessageImage) this.messageCenter.publish(image);
 					
 					image.generateId();
@@ -290,40 +338,52 @@ public class SimulationManager {
 			
 			
 			/*
-			 * Post substring from the whole line
+			 * Parse the PostCapture Phase substring of the line
 			 */
 			String postString = sc.next();
 			tokenizer = new StringTokenizer(postString, "();");
+			/*
+			 * ArrayList which holds the tokens of the substring 
+			 */
 			ArrayList<String> postTokens = new ArrayList<String>();
 			
 			while(tokenizer.hasMoreTokens()){
+				//add the tokens to the array
 				postTokens.add(tokenizer.nextToken());
 			}
 			
+			//remove the "post" keyword from the tokens array
+			//because there is no TaskType available for this keyword
 			postTokens.remove("post");
 			
 			for(String s : postTokens){
 				
+				//set the MessageImages specific TaskType
+				//and send the message to the MessageCenter
 				image.setTaskType(getPostType(s));
-				
 				image = (MessageImage) this.messageCenter.publish(image);
 				
 				image.generateId();
 				
 			}
 			
-			
+			/*
+			 * Create a MessageSave object in order for the image to be saved
+			 */
 			MessageSave messageSave = new MessageSave(TaskType.IMAGE_SAVE, image.getPixels(), image.getWidth(), image.getHeight(), second_word);
 			this.messageCenter.publish(messageSave);
-			/*
-			 * I'm going to hardencode the values because I am wasting time
-			 * figuring out the reading 
-			 * 
-			 */
-				sc.close();
+			
+			sc.close();
 		}		
 	}
 	
+	
+	/**This method creates a TaskType which messages will use in their
+	 * constructor depending on the String value given as parameter
+	 * 
+	 * @param value The String value of the TaskType
+	 * @return Returns the TaskType object specific for the given String value
+	 */
 	public TaskType getPostType(String value){
 		switch (value) {
 		case "sepia":
@@ -337,6 +397,12 @@ public class SimulationManager {
 		}
 	}
 	
+	/**This message returns the photo type that is need 
+	 * in order to process the image .This can be RAW or NORMAL
+	 * 
+	 * @param value	The String name of the photo type 
+	 * @return The TaskType object specific for the given String type
+	 */
 	public TaskType getPhotoType(String value){
 		switch (value) {
 		case "normal":
@@ -350,6 +416,11 @@ public class SimulationManager {
 		}
 	}
 	
+	/**This method returns the FlashType depending on the input type
+	 * 
+	 * @param stringValue The String name of the FlashType that is needed
+	 * @return Returns the FlashType object depending on the given name
+	 */
 	public FlashType getFlashType(String stringValue){
 		switch (stringValue) {
 		case "on":
@@ -369,12 +440,6 @@ public class SimulationManager {
 	 * @param args program arguments
 	 */
 	public static void main(String[] args) {
-//		try {
-//			System.setOut(new PrintStream(new FileOutputStream("outbox.txt")));
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		if(args.length != 1) {
 			System.out.println("Usage: java SimulationManager <network_config_file>");
 			return;

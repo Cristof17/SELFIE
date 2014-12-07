@@ -15,10 +15,19 @@ public class MessageSave extends MessageImage {
 		this.path = path;
 	}
 
+	/**
+	 * This method gets the value of the Path variable of the message
+	 * @return
+	 */
 	public String getPath() {
 		return path;
 	}
 
+	/**
+	 * This method sets the value of the Path attribute to the
+	 * one given as parameter
+	 * @param path The value of the Path attribute
+	 */
 	public void setPath(String path) {
 		this.path = path;
 	}

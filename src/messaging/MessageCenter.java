@@ -16,7 +16,12 @@ public abstract class MessageCenter {
 		this.centerName = centerName;
 	}
 
-	
+	/**Method called from another class in order for the message 
+	 * transmitted as a parameter to be processed
+	 * 
+	 * @param message The message to be processed
+	 * @return The message processed
+	 */
 	public Message publish(Message message)	{
 		System.out.print(centerName+"\r\n");
 		return publishAlgorithm(message);
@@ -48,7 +53,11 @@ public abstract class MessageCenter {
 	}
 	
 	
-	
+	/**This method adds the Message given as parameter 
+	 * to the neighbors list
+	 * 
+	 * @param center The MessageCenter to be added to the neighbors list
+	 */
 	public void addNeighbor(MessageCenter center ){
 		if(this.neighbors == null)
 			this.neighbors = new ArrayList<MessageCenter>();
@@ -70,6 +79,13 @@ public abstract class MessageCenter {
 			return false; 
 	}
 	
+	/**This method adds the ID of a Message to the 
+	 * array of the Messages that got through this 
+	 * MessageCenter
+	 * 
+	 * @param value The ID of the Message that needs to 
+	 * go through this MessageCenter
+	 */
 	public void addMessage(Integer value){
 		this.publishedMessages.add(value);
 	}
