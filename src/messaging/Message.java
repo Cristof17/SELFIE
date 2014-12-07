@@ -32,7 +32,7 @@ public abstract class Message {
 	/**
 	 * This method returns the value of the TaskType attribute
 	 * in a Message derived object
-	 * @return
+	 * @return Returns the TaskType value
 	 */
 	public TaskType getTaskType() {
 		return taskType;

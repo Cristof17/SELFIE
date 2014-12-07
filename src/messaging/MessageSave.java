@@ -17,7 +17,7 @@ public class MessageSave extends MessageImage {
 
 	/**
 	 * This method gets the value of the Path variable of the message
-	 * @return
+	 * @return The path of the image which will hold the pixel information
 	 */
 	public String getPath() {
 		return path;

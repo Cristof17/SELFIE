@@ -69,7 +69,7 @@ public abstract class MessageCenter {
 	/**Method which checks if the message has been here before
 	 * to eliminate the possibility of Loops  
 	 * 
-	 * @param message The message to be checked
+	 * @param messageID The message to be checked
 	 * @return Returns true if the message has been here before
 	 */
 	public boolean hasBeenHereBefore(Integer messageID){

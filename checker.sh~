@@ -16,7 +16,7 @@ mkdir output_files
 
 # testing
 sum=0
-noTests=10
+noTests=0
 
 for (( test=0; test<=$noTests; test++ ))
 do
@@ -24,6 +24,8 @@ do
 	stdinFile="stdin_files/input"$test
 	outputFile="output"$test
 	cat $stdinFile | java -cp bin SimulationManager $configFile > output_files/$outputFile
+	`diff -Bw output_files/$outputFile reference_files/$outputFile &> /dev/null`
+	echo $?
 	`diff -Bw output_files/$outputFile reference_files/$outputFile &> /dev/null`
 	if [ $? -ne 0 ]
 	then
@@ -62,6 +64,6 @@ echo
 echo "Grade .................................... $sum/$noTests"
 
 # clean up
-rm -rf bin
+#rm -rf bin
 #rm -rf "output_files"
 
