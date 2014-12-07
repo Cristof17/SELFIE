@@ -1,5 +1,6 @@
 //Rotsching Cristofor 323CA
 
+
 	Pentru implementare retelei de MessageCenter-uri am folosit un obiect de tip 
 ArrayList<MessageCenter> in care am introdus toate MessageCenter-urile create
 dupa ce am citit primele n linii de la fisierul de intrare .
